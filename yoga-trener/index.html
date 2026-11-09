@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Йога с Верой — онлайн-курс, группы и занятия один на один</title>
+<meta name="description" content="Йога для спины и спокойной головы: онлайн-курс с разбором домашних заданий в Telegram, группы в зале и занятия один на один.">
+<meta name="robots" content="noindex, nofollow"><!-- демо не попадает в поиск; убрать, когда сайт станет настоящим -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='9' y='2' width='14' height='28' rx='4' fill='%231F4D47'/%3E%3Cpath d='M16 6v20M12 9h8M12 23h8' stroke='%23C9F24B' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="img/hero.jpg" media="(min-width: 700px)">
+<link rel="preload" as="image" href="img/hero-m.jpg" media="(max-width: 699px)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Geologica:wght@400;500;600;700&family=Golos+Text:wght@400;500;600&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mat:#1F4D47; --mat-deep:#173C37; --on-mat:#F2F0E9; --on-mat-soft:rgba(242,240,233,.78); --line:rgba(242,240,233,.42);
+  --floor:#ECEDEA; --paper:#F7F7F4; --ink:#16211F; --ink-soft:#43514D; --rule:rgba(22,33,31,.22);
+  --act:#C9F24B; --act-ink:#14301B;
+  --display:"Geologica",system-ui,sans-serif; --text:"Golos Text",system-ui,sans-serif;
+  --h-scale:1; --t-scale:1; --photo:1;
+  --gut:clamp(16px,5vw,72px); --max:1240px; --r-mat:28px; --r-ui:12px;
+}
+:root[data-preset="unique"]{
+  --mat:#FF5A36; --mat-deep:#E8461F; --on-mat:#24104F; --on-mat-soft:rgba(36,16,79,.82); --line:rgba(61,27,184,.6);
+  --floor:#F1EEFA; --paper:#FAF8FF; --ink:#24104F; --ink-soft:#4A3A7A; --rule:rgba(36,16,79,.24);
+  --act:#D7FF3C; --act-ink:#24104F;
+  --display:"Dela Gothic One",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--floor);color:var(--ink);font:400 calc(17px*var(--t-scale))/1.55 var(--text);caret-color:var(--mat)}
+img,video,canvas{display:block;max-width:100%}
+::selection{background:var(--act);color:var(--act-ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+.mat :focus-visible{outline-color:var(--on-mat)}
+html{scrollbar-color:var(--mat) var(--floor)}
+a{color:inherit;text-underline-offset:.2em}
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;line-height:1.06;letter-spacing:-.02em;text-wrap:balance}
+:root[data-preset="unique"] h1,:root[data-preset="unique"] h2,:root[data-preset="unique"] h3{font-weight:400;letter-spacing:-.01em}
+h2{font-size:calc(clamp(2rem,4.2vw,3.4rem)*var(--h-scale))}
+h3{font-size:calc(1.3rem*var(--h-scale))}
+p{margin:0}
+.wrap{width:min(var(--max),100% - 2*var(--gut));margin-inline:auto}
+.num{font-variant-numeric:tabular-nums}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- кнопки ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:52px;padding:0 1.5em;border:0;border-radius:999px;font:600 1rem/1 var(--text);cursor:pointer;text-decoration:none;transition:transform .2s cubic-bezier(.2,.8,.2,1),background-color .2s,color .2s}
+.btn:active{transform:scale(.98)}
+.btn-act{background:var(--act);color:var(--act-ink)}
+.btn-act:hover{background:color-mix(in srgb,var(--act) 86%,#fff)}
+.on-light .btn-act,.btn-act.on-light{background:var(--ink);color:var(--act)}
+.on-light .btn-act:hover,.btn-act.on-light:hover{background:color-mix(in srgb,var(--ink) 86%,var(--act))}
+.btn-line{background:transparent;color:currentColor;box-shadow:inset 0 0 0 1.5px currentColor}
+.btn-line:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- шапка ---------- */
+.top{position:fixed;inset:0 0 auto;z-index:40;transition:background-color .3s,box-shadow .3s}
+.top.solid{background:var(--floor);box-shadow:0 1px 0 var(--rule)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:72px}
+.logo{display:flex;flex-direction:column;text-decoration:none;line-height:1.05}
+.logo b{font:700 1.3rem/1 var(--display)}
+:root[data-preset="unique"] .logo b{font-weight:400}
+.logo small{font-size:.78rem;color:var(--ink-soft);margin-top:4px}
+.nav{display:flex;gap:26px;margin-left:auto;font-size:.95rem}
+.nav a{text-decoration:none;padding:6px 0;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .3s}
+.nav a:hover{background-size:100% 1px}
+.top:not(.solid) .nav{background:color-mix(in srgb,var(--floor) 88%,transparent);padding:4px 18px;border-radius:999px}
+.top .btn{min-height:44px;padding:0 1.2em;font-size:.95rem}
+.demo-badge{position:absolute;top:84px;left:var(--gut);z-index:3;padding:7px 14px;border-radius:999px;background:rgba(22,33,31,.72);color:#F2F0E9;font-size:.82rem}
+
+/* ---------- первый экран ---------- */
+.hero{position:relative;height:230vh;background:#cfd2cf}
+.hero-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(var(--photo))}
+.hero-video{opacity:0;transition:opacity .35s}
+.hero-video.ready{opacity:1}
+.hero-bright{display:none;transform-origin:50% 50%}
+:root[data-preset="unique"] .hero-bright{display:block}
+:root[data-preset="unique"] .hero-base,:root[data-preset="unique"] .hero-video{display:none}
+.hero-copy,.hero-end{position:absolute;z-index:2;left:var(--gut);color:var(--ink)}
+.hero-copy{width:var(--copy-w,40vw);bottom:var(--copy-b,18vh)}
+.hero h1{font-size:calc(clamp(2.4rem,4.3vw,4.4rem)*var(--h-scale));max-width:12ch}
+.hero .lead{margin-top:20px;font-size:1.08rem;max-width:34ch;color:var(--ink-soft)}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;margin-top:28px}
+.hero-actions .btn{transform:translateY(50%)}
+.hero-actions .btn:active{transform:translateY(50%) scale(.98)}
+.hero-actions a.more{font-weight:500;transform:translateY(50%)}
+.tick-line{position:absolute;z-index:1;left:0;height:1px;background:var(--ink);opacity:.5;top:var(--tick-y,80vh);width:var(--tick-w,40vw);transform-origin:0 50%}
+.cues{position:absolute;inset:0;z-index:2;pointer-events:none}
+.cues svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.cues line{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 4}
+.cues circle{fill:var(--act);stroke:var(--ink);stroke-width:1.25}
+.cue{position:absolute;transform:translateY(-50%);max-width:var(--cue-w,190px);font-size:.88rem;line-height:1.3;color:var(--ink);background:rgba(236,237,234,.86);padding:6px 10px;border-radius:8px}
+.hero-end{width:min(440px,40vw);bottom:16vh;opacity:0;pointer-events:none}
+.hero-end p{font:700 calc(clamp(1.5rem,2.4vw,2.2rem)*var(--h-scale))/1.15 var(--display);letter-spacing:-.015em}
+:root[data-preset="unique"] .hero-end p{font-weight:400}
+.hero-end .btn{margin-top:24px}
+.scroll-hint{position:absolute;z-index:2;right:calc(var(--gut) + 84px);bottom:28px;display:flex;align-items:center;gap:10px;font-size:.85rem;color:var(--ink-soft)}
+.scroll-hint i{width:1px;height:38px;background:var(--ink);opacity:.45;transform-origin:top;animation:hint 2.2s cubic-bezier(.6,0,.2,1) infinite}
+@keyframes hint{0%{transform:scaleY(0)}55%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* ---------- коврик: общая секция ---------- */
+.sec{padding:clamp(72px,10vw,136px) 0}
+.mat{position:relative;background:var(--mat);color:var(--on-mat);border-radius:var(--r-mat);margin-inline:clamp(8px,1.6vw,24px);padding:clamp(64px,8vw,112px) 0}
+.mat::before,.mat::after{content:"";position:absolute;left:50%;width:min(300px,46%);height:26px;transform:translateX(-50%);pointer-events:none;
+  background:linear-gradient(var(--line),var(--line)) 50% 0/1px 100% no-repeat,linear-gradient(var(--line),var(--line)) 0 100%/42% 1px no-repeat,linear-gradient(var(--line),var(--line)) 100% 100%/42% 1px no-repeat}
+.mat::before{top:22px}
+.mat::after{bottom:22px;transform:translateX(-50%) scaleY(-1)}
+.head{display:flex;align-items:flex-end;gap:24px;margin-bottom:clamp(36px,5vw,64px)}
+.head h2{flex:none;max-width:16ch}
+.head::after{content:"";flex:1;height:1px;margin-bottom:.55em;background:var(--rule)}
+.mat .head::after{background:var(--line)}
+.head-note{margin:-36px 0 48px;color:var(--ink-soft);max-width:52ch}
+.mat .head-note{color:var(--on-mat-soft)}
+
+/* ---------- форматы ---------- */
+.formats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,24px)}
+.fmt{position:relative;display:flex;flex-direction:column;background:var(--mat);color:var(--on-mat);border-radius:22px;overflow:hidden}
+.fmt img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(var(--photo))}
+.fmt-body{position:relative;display:flex;flex-direction:column;gap:10px;flex:1;padding:22px 22px 64px}
+.fmt-body::after{content:"";position:absolute;left:50%;bottom:18px;width:60%;height:18px;transform:translateX(-50%);
+  background:linear-gradient(var(--line),var(--line)) 50% 0/1px 100% no-repeat,linear-gradient(var(--line),var(--line)) 0 100%/44% 1px no-repeat,linear-gradient(var(--line),var(--line)) 100% 100%/44% 1px no-repeat}
+.fmt p{color:var(--on-mat-soft)}
+.fmt .price{margin-top:auto;padding-top:10px;font:600 1.15rem/1.2 var(--text)}
+.fmt .btn{margin-top:14px;align-self:flex-start;min-height:44px}
+.on-light .fmt .btn-act{background:var(--act);color:var(--act-ink)}
+.on-light .fmt .btn-act:hover{background:color-mix(in srgb,var(--act) 86%,#fff)}
+
+/* ---------- подбор ---------- */
+.quiz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(28px,5vw,72px);align-items:start}
+.q-track{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.q-track span{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line);flex:none;transition:background-color .3s}
+.q-track span.on{background:var(--on-mat);box-shadow:none}
+.q-track i{flex:1;height:1px;background:var(--line)}
+.q-step h3{font-size:calc(1.6rem*var(--h-scale));margin-bottom:22px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{min-height:48px;padding:0 18px;border:0;border-radius:999px;background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px var(--line);font:500 1rem/1 var(--text);cursor:pointer;transition:background-color .2s,color .2s,box-shadow .2s}
+.chip:hover{box-shadow:inset 0 0 0 1.5px var(--on-mat)}
+.chip[aria-pressed="true"]{background:var(--on-mat);color:var(--mat);box-shadow:none}
+.q-result{display:none}
+.q-result.show{display:block}
+.q-result p{font:600 calc(1.5rem*var(--h-scale))/1.25 var(--display);letter-spacing:-.01em}
+:root[data-preset="unique"] .q-result p{font-weight:400}
+.q-result small{display:block;margin-top:14px;color:var(--on-mat-soft);font-size:1rem}
+.q-result .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.quiz-aside p{color:var(--on-mat-soft);max-width:36ch;margin-top:18px}
+
+/* ---------- расписание ---------- */
+.week{display:grid;grid-template-columns:repeat(7,minmax(132px,1fr));gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.day{scroll-snap-align:start;display:flex;flex-direction:column;gap:8px}
+.day h3{font:600 .95rem/1 var(--text);letter-spacing:0;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.slot{display:flex;flex-direction:column;gap:3px;min-height:92px;padding:12px;border:0;border-radius:var(--r-ui);background:var(--paper);color:var(--ink);text-align:left;font:inherit;cursor:pointer;box-shadow:0 1px 2px rgba(22,33,31,.06),0 4px 14px rgba(22,33,31,.05);transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s}
+.slot:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(22,33,31,.08),0 10px 24px rgba(22,33,31,.08)}
+.slot b{font:600 1.05rem/1.1 var(--text)}
+.slot span{font-size:.86rem;color:var(--ink-soft)}
+.slot em{font-style:normal;font-size:.8rem;color:var(--mat-deep);font-weight:600;margin-top:auto}
+:root[data-preset="unique"] .slot em{color:var(--ink)}
+.slot.full{background:transparent;box-shadow:inset 0 0 0 1px var(--rule);cursor:default;color:var(--ink-soft)}
+.slot.full:hover{transform:none}
+.slot.free{background:transparent;box-shadow:none;border:1.5px dashed color-mix(in srgb,var(--ink) 38%,transparent);padding:10.5px}
+.slot.free:hover{border-color:var(--ink);box-shadow:none}
+.slot.picked{box-shadow:inset 0 0 0 2px var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:.88rem;color:var(--ink-soft)}
+.legend i{display:inline-block;width:22px;height:12px;border-radius:4px;vertical-align:-1px;margin-right:8px}
+
+/* ---------- домашка ---------- */
+.hw{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,5vw,72px);align-items:center}
+.task{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px}
+.task img{width:96px;height:72px;border-radius:10px;object-fit:cover;flex:none}
+.task b{display:block;font-weight:600}
+.task span{color:var(--on-mat-soft);font-size:.95rem}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:300px;padding:28px;border-radius:22px;text-align:center;background:rgba(0,0,0,.12);transition:background-color .2s}
+:root[data-preset="unique"] .drop{background:rgba(255,255,255,.22)}
+.drop::after{content:"";position:absolute;inset:14px;border-radius:14px;border:1.5px dashed var(--line);pointer-events:none}
+.drop-empty{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px}
+.drop.over{background:rgba(0,0,0,.24)}
+.drop .ico{width:30px;height:30px}
+.drop strong{font:600 1.15rem/1.2 var(--text)}
+.drop small{color:var(--on-mat-soft)}
+.drop .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.drop .btn{min-height:46px}
+.preview{display:none;position:relative;z-index:1;width:100%;border-radius:14px;overflow:hidden;background:#000}
+.preview video,.preview img{width:100%;max-height:320px;object-fit:contain;margin:auto}
+.has-file .preview{display:block}
+.has-file .drop-empty{display:none}
+.bar{position:relative;height:28px;margin-top:20px}
+.bar::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+.bar i{position:absolute;left:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:var(--act);width:var(--pct,0%)}
+.bar b{position:absolute;top:50%;left:var(--pct,0%);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--act);box-shadow:0 0 0 3px var(--mat)}
+.status{min-height:1.6em;margin-top:6px;font-weight:500}
+.status small{display:block;font-weight:400;color:var(--on-mat-soft);margin-top:2px}
+.demo-note{margin-top:14px;font-size:.85rem;color:var(--on-mat-soft)}
+.phone{width:min(100%,360px);margin-inline:auto;border-radius:38px;padding:12px;background:#0E1513;box-shadow:0 2px 6px rgba(0,0,0,.25),0 30px 60px rgba(0,0,0,.28)}
+.tg{border-radius:28px;overflow:hidden;background:#DCE6E3;color:#0F1A17;height:540px;display:flex;flex-direction:column}
+.tg-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border-bottom:1px solid rgba(0,0,0,.08)}
+.tg-ava{width:38px;height:38px;border-radius:50%;background:#1F4D47;color:#C9F24B;display:grid;place-items:center;font:700 .9rem/1 var(--text)}
+.tg-head b{display:block;font-size:.98rem}
+.tg-head small{color:#5B6B67;font-size:.8rem}
+.tg-feed{flex:1;display:flex;flex-direction:column;gap:10px;padding:16px 12px;overflow-y:auto}
+.tg-feed>:first-child{margin-top:auto}
+.tg-empty{margin:auto;text-align:center;color:#4F5E5A;font-size:.9rem;max-width:24ch;padding:22px;border-radius:16px;border:1.5px dashed rgba(15,26,23,.25)}
+.msg{align-self:flex-start;max-width:88%;background:#fff;border-radius:16px 16px 16px 6px;padding:10px 12px;font-size:.92rem;line-height:1.4;box-shadow:0 1px 1px rgba(0,0,0,.08);animation:msg .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes msg{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.msg .thumb{margin:-4px -6px 8px;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/10}
+.msg .thumb img{width:100%;height:100%;object-fit:cover}
+.msg time{display:block;text-align:right;font-size:.72rem;color:#66746F;margin-top:4px}
+.kb{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-self:stretch;max-width:88%;flex:none}
+.kb button{min-height:40px;border:0;border-radius:10px;background:rgba(255,255,255,.72);color:#1F4D47;font:600 .86rem/1.1 var(--text);cursor:pointer}
+.kb button:hover{background:#fff}
+.kb button.wide{grid-column:1/-1}
+.kb button[disabled]{opacity:.5;cursor:default}
+.msg.sys{align-self:center;background:rgba(15,26,23,.08);box-shadow:none;font-size:.82rem;color:#33423E;border-radius:12px}
+
+/* ---------- о преподавателе ---------- */
+.about{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(28px,6vw,96px);align-items:center}
+.about img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:var(--r-mat);filter:brightness(var(--photo))}
+.about .quote{font:600 calc(clamp(1.5rem,2.6vw,2.2rem)*var(--h-scale))/1.2 var(--display);letter-spacing:-.015em;text-wrap:balance}
+:root[data-preset="unique"] .about .quote{font-weight:400}
+.facts{list-style:none;padding:0;margin:36px 0 0;display:grid;gap:0}
+.facts li{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--rule)}
+.facts li:last-child{border-bottom:1px solid var(--rule)}
+.facts b{font-weight:600}
+.facts span{color:var(--ink-soft)}
+
+/* ---------- вопросы ---------- */
+.faq{max-width:860px}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;cursor:pointer;font:600 1.12rem/1.3 var(--text)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .ico{transition:transform .3s}
+.faq details[open] summary .ico{transform:rotate(45deg)}
+.faq details p{padding:0 0 24px;color:var(--on-mat-soft);max-width:60ch}
+
+/* ---------- запись ---------- */
+.final{position:relative;padding:clamp(80px,11vw,150px) 0;color:#F2F0E9;overflow:hidden}
+.final>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(calc(var(--photo)*.55))}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,20,18,.62),rgba(10,20,18,.18) 62%,transparent);pointer-events:none}
+.final .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
+.final h2{color:#F2F0E9}
+.final .lead{margin-top:18px;max-width:36ch;color:rgba(242,240,233,.9);font-size:1.08rem}
+.form{background:var(--paper);color:var(--ink);border-radius:24px;padding:clamp(22px,3vw,36px);display:grid;gap:16px;box-shadow:0 2px 6px rgba(0,0,0,.18),0 30px 60px rgba(0,0,0,.22)}
+.f{display:grid;gap:6px;font-size:.92rem;font-weight:500}
+.f input,.f select{min-height:50px;padding:0 14px;border-radius:10px;border:1.5px solid var(--rule);background:#fff;color:var(--ink);font:400 1rem/1 var(--text);transition:border-color .2s}
+.f input::placeholder{color:#6B7774}
+.f input:focus,.f select:focus{outline:none;border-color:var(--ink)}
+.f input[aria-invalid="true"]{border-color:#B3261E}
+.err{color:#B3261E;font-size:.84rem;min-height:1.2em}
+.err:empty{min-height:0}
+.chan{display:flex;flex-wrap:wrap;gap:8px}
+.chan label{position:relative}
+.chan input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.chan span{display:inline-flex;align-items:center;min-height:42px;padding:0 14px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--rule);font-size:.92rem}
+.chan input:checked+span{background:var(--ink);color:var(--paper);box-shadow:none}
+.chan input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:.84rem;color:var(--ink-soft);font-weight:400}
+.consent input{margin-top:3px;accent-color:var(--mat);width:18px;height:18px;flex:none}
+.form .btn{width:100%}
+.done{display:none;text-align:center;padding:20px 0}
+.form.sent>*{display:none}
+.form.sent .done{display:block}
+.done b{display:block;font:700 1.5rem/1.2 var(--display);margin-bottom:10px}
+footer{padding:40px 0 110px;font-size:.88rem;color:var(--ink-soft)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+/* ---------- панель «Настроить вид» ---------- */
+.tune-btn{position:fixed;right:18px;bottom:18px;z-index:50;width:58px;height:58px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.18),0 12px 28px rgba(0,0,0,.18)}
+.tune-btn .ico{width:24px;height:24px}
+.tune{position:fixed;right:18px;bottom:88px;z-index:50;width:min(340px,calc(100vw - 36px));max-height:calc(100vh - 120px);overflow:auto;padding:22px;border-radius:20px;background:var(--paper);color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.18),0 24px 60px rgba(0,0,0,.24);display:none}
+.tune.open{display:block}
+.tune h3{font:600 1.05rem/1.2 var(--text);letter-spacing:0;margin-bottom:4px}
+.tune .sub{font-size:.84rem;color:var(--ink-soft);margin-bottom:16px}
+.tune fieldset{border:0;padding:0;margin:0 0 18px}
+.tune legend{font-size:.82rem;font-weight:600;margin-bottom:8px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-height:40px;padding:0 12px;border:0;border-radius:10px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--rule);color:var(--ink);font:500 .9rem/1 var(--text);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);box-shadow:none}
+.sw{display:flex;gap:8px}
+.sw button{width:36px;height:36px;border-radius:50%;border:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--ink)}
+.tune input[type=range]{width:100%;accent-color:var(--ink)}
+.tune .reset{background:none;border:0;padding:0;color:var(--ink-soft);text-decoration:underline;font:inherit;font-size:.86rem;cursor:pointer}
+
+/* ---------- адаптив ---------- */
+@media (max-width:999px){
+  .nav{display:none}
+  .top .wrap{height:60px}
+  .top{background:var(--floor);box-shadow:0 1px 0 var(--rule)}
+  .demo-badge{top:70px;font-size:.76rem}
+  .hero-copy,.hero-end{left:var(--gut);right:var(--gut);width:auto;bottom:calc(92px + env(safe-area-inset-bottom));color:#F2F0E9}
+  .hero-actions a.more{display:none}
+  .hero .lead{color:rgba(242,240,233,.92)}
+  .hero-stage::after{content:"";position:absolute;inset:auto 0 0;height:62%;z-index:1;background:linear-gradient(to top,rgba(12,26,23,.88),rgba(12,26,23,.55) 55%,transparent);pointer-events:none}
+  :root[data-preset="unique"] .hero-stage::after{background:linear-gradient(to top,rgba(36,16,79,.9),rgba(36,16,79,.5) 55%,transparent)}
+  .hero h1{max-width:none;font-size:calc(clamp(2.1rem,8.6vw,3rem)*var(--h-scale))}
+  .hero-actions .btn,.hero-actions a.more,.hero-actions .btn:active{transform:none}
+  .hero-actions .btn{flex:1 1 220px}
+  .hero .btn-act.on-light{background:var(--act);color:var(--act-ink)}
+  .hero .btn-act.on-light:hover{background:color-mix(in srgb,var(--act) 86%,#fff)}
+  .tick-line,.cues,.scroll-hint{display:none}
+  .hero-end .btn{width:100%}
+  .formats{grid-template-columns:1fr;max-width:560px}
+  .quiz,.hw,.about,.final .wrap{grid-template-columns:1fr}
+  .about img{max-height:520px}
+  .facts li{grid-template-columns:1fr;gap:2px}
+  .head{margin-bottom:32px}
+  .head::after{display:none}
+  .head-note{margin:-16px 0 32px}
+  .week{grid-template-columns:repeat(7,minmax(148px,1fr));margin-right:calc(-1*var(--gut));padding-right:var(--gut)}
+}
+@media (max-width:520px){
+  .mat{border-radius:22px;margin-inline:8px}
+  .top .btn{padding:0 1em;font-size:.88rem}
+  .drop{min-height:240px}
+  .tg{height:460px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero{height:100vh;height:100svh}
+  .hero-video,.hero-end,.scroll-hint{display:none}
+  .msg{animation:none}
+  *{transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<script>
+/* ============================================================
+   НАСТРОЙКИ ДЕМО — под нового преподавателя меняется этот блок
+   (и фото в папке img/).
+   ============================================================ */
+const CONFIG = {
+  brand: "Йога с Верой",
+  tagline: "онлайн и в зале",
+  teacher: "Вера",
+  demoBadge: "Демо-концепт · собран под ваш заказ",   // пустая строка — убрать плашку
+  hero: {
+    title: "Йога для спины и спокойной головы",
+    lead: "Онлайн-курс, группы в зале и занятия один на один. Домашние задания разбираю в Telegram: голосом и с пометками.",
+    endText: "Три формата, один подход: сначала спина, потом глубина.",
+    cues: [   // подсказки к позе: точка на фото (доля ширины и высоты кадра) и текст
+      { x: .586, y: .385, text: "Кисти мягко на коленях" },
+      { x: .556, y: .505, text: "Плечи вниз, подальше от ушей" },
+      { x: .548, y: .615, text: "Таз тяжёлый, спина растёт вверх" }
+    ],
+    tick: { y: .79, matLeft: .41 }   // нижняя отметка коврика на фото и левый край коврика
+  },
+  formats: [
+    { id: "online", name: "Онлайн-курс «Спина без боли»", text: "6 недель, 18 уроков в записи. Домашние задания с разбором в Telegram.", price: "9 900 ₽ за курс", photo: "img/f-online.jpg" },
+    { id: "group",  name: "Группа в зале", text: "До 12 человек. Коврики, пледы и блоки есть в зале.", price: "800 ₽ занятие · 8 занятий — 5 600 ₽", photo: "img/f-group.jpg" },
+    { id: "personal", name: "Один на один", text: "Смотрим вашу спину и собираем программу под вас.", price: "2 500 ₽ занятие", photo: "img/f-personal.jpg" }
+  ],
+  quiz: [
+    { q: "Вы раньше занимались йогой?", a: ["Ни разу", "Немного", "Регулярно"] },
+    { q: "Что хотите в первую очередь?", a: ["Чтобы не болела спина", "Гибкость", "Спать и успокоиться", "Силу и тонус"] },
+    { q: "Где удобнее заниматься?", a: ["Дома, онлайн", "В зале", "Один на один"] }
+  ],
+  schedule: [   // left — свободные места из of; free: true — свободное окно для занятия один на один
+    { day: "Пн", slots: [{ t: "08:00", name: "Хатха для спины", left: 4, of: 12 }, { t: "19:30", name: "Мягкая йога", left: 0, of: 12 }] },
+    { day: "Вт", slots: [{ t: "12:00", free: true }, { t: "20:00", name: "Йога для сна", left: 6, of: 12 }] },
+    { day: "Ср", slots: [{ t: "08:00", name: "Хатха для спины", left: 2, of: 12 }, { t: "18:00", free: true }] },
+    { day: "Чт", slots: [{ t: "19:30", name: "Мягкая йога", left: 5, of: 12 }] },
+    { day: "Пт", slots: [{ t: "08:00", name: "Хатха для спины", left: 0, of: 12 }, { t: "13:00", free: true }] },
+    { day: "Сб", slots: [{ t: "10:00", name: "Сила и баланс", left: 7, of: 12 }, { t: "12:00", name: "Открытое занятие", left: 3, of: 16 }] },
+    { day: "Вс", slots: [{ t: "11:00", name: "Йога для спины", left: 8, of: 12 }] }
+  ],
+  homework: { lesson: "Урок 3 из 18 · «Собака мордой вниз»", hint: "Снимите 30–60 секунд сбоку, чтобы была видна спина.", student: "Мария К.", sample: "img/homework.jpg" },
+  about: {
+    photo: "img/portrait.jpg",
+    quote: "Сначала спина перестаёт болеть. Растяжка и спокойствие приходят следом.",
+    facts: [["Направление", "Хатха-йога, йога для спины"], ["Группы", "До 12 человек, коврики есть"], ["Онлайн", "Курс в записи и разбор ДЗ в Telegram"]]
+  },
+  faq: [
+    { q: "Я совсем без растяжки — мне можно?", a: "Да. Первые занятия нужны, чтобы спине стало легче. Гибкость не нужна на старте." },
+    { q: "Нужен ли свой коврик?", a: "В зал не нужен: коврики, пледы и блоки есть. Для онлайн-курса подойдёт любой нескользящий коврик." },
+    { q: "Как сдавать домашние задания?", a: "Снимаете короткое видео на телефон и загружаете на сайте. Вера получает его в Telegram и отвечает голосом." },
+    { q: "Что если пропущу занятие в группе?", a: "Предупредите за 4 часа — занятие перенесётся на другой день недели." }
+  ],
+  channels: ["Telegram", "MAX", "WhatsApp", "Звонок"],
+  replyMinutes: 15,
+  privacyUrl: ""   // ссылка на политику обработки данных; пусто — только текст согласия
+};
+</script>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#hero"><b data-bind="brand"></b><small data-bind="tagline"></small></a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#formats">Форматы</a><a href="#schedule">Расписание</a><a href="#homework">Домашка</a><a href="#faq">Вопросы</a>
+    </nav>
+    <a class="btn btn-act on-light" href="#book" data-book>Пробное занятие</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero" aria-label="Первый экран">
+    <div class="hero-stage">
+      <picture class="hero-base">
+        <source media="(max-width: 699px)" srcset="img/hero-m.jpg">
+        <img class="hero-media" src="img/hero.jpg" alt="Преподаватель йоги сидит в медитации на зелёном коврике с линиями разметки, вид сверху">
+      </picture>
+      <picture>
+        <source media="(max-width: 699px)" srcset="img/hero-bright-m.jpg">
+        <img class="hero-media hero-bright" id="heroBright" src="img/hero-bright.jpg" alt="Тот же кадр в ярком шаблоне: коралловый коврик с фиолетовой разметкой" loading="lazy">
+      </picture>
+      <video class="hero-media hero-video" id="heroVideo" muted playsinline webkit-playsinline disablepictureinpicture disableremoteplayback preload="auto" aria-hidden="true"></video>
+      <span class="demo-badge" data-bind="demoBadge"></span>
+      <div class="tick-line" id="tickLine" aria-hidden="true"></div>
+      <div class="cues" id="cues" aria-hidden="true"><svg id="cueLines"></svg></div>
+      <div class="hero-copy" id="heroCopy">
+        <h1 data-bind="hero.title"></h1>
+        <p class="lead" data-bind="hero.lead"></p>
+        <div class="hero-actions">
+          <a class="btn btn-act on-light" href="#book" data-book>Записаться на пробное</a>
+          <a class="more" href="#schedule">Расписание</a>
+        </div>
+      </div>
+      <div class="hero-end" id="heroEnd">
+        <p data-bind="hero.endText"></p>
+        <a class="btn btn-act on-light" href="#quiz">Подобрать формат</a>
+      </div>
+      <div class="scroll-hint" id="scrollHint" aria-hidden="true"><i></i>листайте</div>
+    </div>
+  </section>
+
+  <section class="sec on-light" id="formats">
+    <div class="wrap">
+      <div class="head"><h2>Три способа заниматься</h2></div>
+      <div class="formats" id="formatList"></div>
+    </div>
+  </section>
+
+  <section class="mat" id="quiz">
+    <div class="wrap quiz">
+      <div class="quiz-aside">
+        <h2>Подберём практику за три вопроса</h2>
+        <p>Без теста на гибкость. Ответы попадут в заявку, и Вера увидит их до первого занятия.</p>
+      </div>
+      <div>
+        <div class="q-track" id="qTrack" aria-hidden="true"></div>
+        <div class="q-step" id="qStep" aria-live="polite"></div>
+        <div class="q-result" id="qResult" aria-live="polite">
+          <p id="qText"></p>
+          <small>Первое занятие бесплатное в любом формате.</small>
+          <div class="row">
+            <a class="btn btn-act" href="#book" data-book>Записаться на пробное</a>
+            <button class="btn btn-line" type="button" id="qAgain">Пройти заново</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec on-light" id="schedule">
+    <div class="wrap">
+      <div class="head"><h2>Расписание на неделю</h2></div>
+      <p class="head-note">Нажмите на занятие, и оно встанет в заявку. Свободные окна — для занятий один на один.</p>
+      <div class="week" id="week"></div>
+      <div class="legend"><span><i style="background:var(--paper);box-shadow:0 1px 3px rgba(0,0,0,.12)"></i>есть места</span><span><i style="box-shadow:inset 0 0 0 1px var(--rule)"></i>мест нет</span><span><i style="border:1.5px dashed color-mix(in srgb,var(--ink) 38%,transparent)"></i>свободное окно</span></div>
+    </div>
+  </section>
+
+  <section class="mat" id="homework">
+    <div class="wrap">
+      <div class="head"><h2>Домашка уходит преподавателю в Telegram</h2></div>
+      <div class="hw">
+        <div>
+          <div class="task"><img src="img/homework.jpg" alt="" loading="lazy"><div><b data-bind="homework.lesson"></b><span data-bind="homework.hint"></span></div></div>
+          <div class="drop" id="drop">
+            <div class="drop-empty">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+              <strong>Положите видео или фото на коврик</strong>
+              <small>Перетащите файл сюда или выберите на телефоне</small>
+              <div class="row" style="margin-top:6px">
+                <label class="btn btn-act" for="hwFile">Выбрать файл</label>
+                <button class="btn btn-line" type="button" id="hwSample">Отправить пример</button>
+              </div>
+            </div>
+            <div class="preview" id="preview"></div>
+            <input class="vh" type="file" id="hwFile" accept="video/*,image/*">
+          </div>
+          <div class="bar" id="bar" aria-hidden="true"><i></i><b></b></div>
+          <p class="status" id="hwStatus" role="status">Файл ещё не выбран</p>
+          <p class="demo-note">Демо: файл не уходит с вашего устройства, загрузка и ответ бота показаны для примера.</p>
+        </div>
+        <div class="phone" aria-label="Так преподаватель видит домашнее задание в Telegram">
+          <div class="tg">
+            <div class="tg-head"><div class="tg-ava" aria-hidden="true">ДЗ</div><div><b>Бот «Йога с Верой»</b><small>уведомления преподавателю</small></div></div>
+            <div class="tg-feed" id="tgFeed"><p class="tg-empty" id="tgEmpty">Здесь появится уведомление: кто сдал, какой урок, видео и кнопки ответа.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec on-light" id="about">
+    <div class="wrap about">
+      <img id="aboutPhoto" src="img/portrait.jpg" alt="Преподаватель йоги Вера в студии со свёрнутым ковриком" loading="lazy">
+      <div>
+        <div class="head" style="margin-bottom:28px"><h2 data-bind="teacher"></h2></div>
+        <p class="quote" data-bind="about.quote"></p>
+        <ul class="facts" id="facts"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="mat" id="faq">
+    <div class="wrap">
+      <div class="head"><h2>Частые вопросы</h2></div>
+      <div class="faq" id="faqList"></div>
+    </div>
+  </section>
+
+  <section class="final" id="book">
+    <img src="img/final.jpg" alt="" loading="lazy">
+    <div class="wrap">
+      <div>
+        <h2>Первое занятие&nbsp;— бесплатно</h2>
+        <p class="lead" id="finalLead"></p>
+      </div>
+      <form class="form" id="bookForm" novalidate>
+        <label class="f">Как к вам обращаться<input name="name" autocomplete="given-name" required><span class="err" data-err="name"></span></label>
+        <label class="f">Телефон или @ник в Telegram<input name="contact" inputmode="text" autocomplete="tel" placeholder="+7 900 000-00-00 или @username" required><span class="err" data-err="contact"></span></label>
+        <label class="f">Формат<select name="format" id="fFormat"></select></label>
+        <label class="f">Время<select name="slot" id="fSlot"></select></label>
+        <div class="f">Куда ответить<div class="chan" id="chan"></div></div>
+        <label class="consent"><input type="checkbox" name="ok" required><span id="consentText"></span></label>
+        <span class="err" data-err="ok"></span>
+        <button class="btn btn-act on-light" type="submit">Записаться на пробное</button>
+        <div class="done" role="status"><b>Готово</b><p id="doneText"></p></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span data-bind="brand"></span><span>Демо-концепт: имя преподавателя, цены и расписание — пример.</span></div></footer>
+
+<button class="tune-btn" id="tuneBtn" type="button" aria-expanded="false" aria-controls="tune" aria-label="Настроить вид">
+  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+</button>
+<div class="tune" id="tune" role="dialog" aria-label="Настроить вид">
+  <h3>Настроить вид</h3>
+  <p class="sub">Один шаблон — разные преподаватели. Меняется только «краска», разметка остаётся.</p>
+  <fieldset><legend>Шаблон</legend><div class="seg" id="tPreset"></div></fieldset>
+  <fieldset><legend>Цвет коврика</legend><div class="sw" id="tMat"></div></fieldset>
+  <fieldset><legend>Шрифт заголовков</legend><div class="seg" id="tFont"></div></fieldset>
+  <fieldset><legend>Размер текста</legend><div class="seg" id="tSize"></div></fieldset>
+  <fieldset><legend>Яркость фото</legend><input type="range" id="tPhoto" min="70" max="110" step="5" aria-label="Яркость фото"></fieldset>
+  <button class="reset" type="button" id="tReset">Сбросить</button>
+</div>
+
+<script>
+(() => {
+  const C = CONFIG, $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const root = document.documentElement;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("yoga-demo:" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem("yoga-demo:" + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  const typo = s => String(s).replace(/ ([—–]) /g, " $1 ");   // тире не начинает строку
+  const esc = s => typo(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const pick = (obj, path) => path.split(".").reduce((o, k) => (o || {})[k], obj);
+
+  /* ---------- тексты из CONFIG ---------- */
+  $$("[data-bind]").forEach(el => { const v = pick(C, el.dataset.bind); if (v === "" && el.classList.contains("demo-badge")) el.remove(); else if (v != null) el.textContent = typo(v); });
+  $("#finalLead").textContent = `Оставьте контакт: ${C.teacher} ответит в течение ${C.replyMinutes} минут и подберёт время.`;
+
+  $("#formatList").innerHTML = C.formats.map(f => `
+    <article class="fmt">
+      <img src="${f.photo}" alt="${esc(f.name)}" loading="lazy">
+      <div class="fmt-body"><h3>${esc(f.name)}</h3><p>${esc(f.text)}</p><span class="price num">${esc(f.price)}</span>
+        <a class="btn btn-act" href="#book" data-book data-format="${f.id}">Выбрать</a></div>
+    </article>`).join("");
+
+  $("#facts").innerHTML = C.about.facts.map(([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v)}</span></li>`).join("");
+  $("#aboutPhoto").src = C.about.photo;
+  const plus = `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`;
+  $("#faqList").innerHTML = C.faq.map(f => `<details><summary>${esc(f.q)}${plus}</summary><p>${esc(f.a)}</p></details>`).join("");
+
+  /* ---------- расписание ---------- */
+  const slotLabel = (d, s) => s.free ? `${d.day} ${s.t} · один на один` : `${d.day} ${s.t} · ${s.name}`;
+  $("#week").innerHTML = C.schedule.map((d, di) => `<div class="day"><h3>${d.day}</h3>${d.slots.map((s, si) => {
+    if (s.free) return `<button type="button" class="slot free" data-slot="${di}-${si}"><b class="num">${s.t}</b><span>свободное окно</span><em>один на один</em></button>`;
+    if (!s.left) return `<div class="slot full" aria-label="${esc(s.name)}, ${s.t}, мест нет"><b class="num">${s.t}</b><span>${esc(s.name)}</span><em>мест нет</em></div>`;
+    return `<button type="button" class="slot" data-slot="${di}-${si}"><b class="num">${s.t}</b><span>${esc(s.name)}</span><em class="num">${s.left} из ${s.of} мест</em></button>`;
+  }).join("")}</div>`).join("");
+
+  /* ---------- форма записи ---------- */
+  const fFormat = $("#fFormat"), fSlot = $("#fSlot"), form = $("#bookForm");
+  fFormat.innerHTML = C.formats.map(f => `<option value="${f.id}">${esc(f.name)}</option>`).join("") + `<option value="any">Пока не знаю — подскажите</option>`;
+  const slots = [];
+  C.schedule.forEach((d, di) => d.slots.forEach((s, si) => { if (s.free || s.left) slots.push({ id: `${di}-${si}`, text: slotLabel(d, s) }); }));
+  fSlot.innerHTML = `<option value="">Подобрать вместе</option>` + slots.map(s => `<option value="${s.id}">${esc(s.text)}</option>`).join("");
+  $("#chan").innerHTML = C.channels.map((c, i) => `<label><input type="radio" name="channel" value="${esc(c)}"${i ? "" : " checked"}><span>${esc(c)}</span></label>`).join("");
+  $("#consentText").innerHTML = C.privacyUrl ? `Согласен(на) на обработку персональных данных по <a href="${C.privacyUrl}" target="_blank" rel="noopener">политике</a>` : "Согласен(на) на обработку персональных данных, чтобы со мной связались";
+  let quizNote = "";
+
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-book]");
+    if (b && b.dataset.format) fFormat.value = b.dataset.format;
+    const s = e.target.closest(".slot[data-slot]");
+    if (s) {
+      $$(".slot.picked").forEach(x => x.classList.remove("picked")); s.classList.add("picked");
+      fSlot.value = s.dataset.slot;
+      fFormat.value = s.classList.contains("free") ? "personal" : "group";
+      $("#book").scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+    }
+  });
+
+  const setErr = (n, msg) => { const el = form.querySelector(`[data-err="${n}"]`); el.textContent = msg; const inp = form.elements[n]; if (inp && inp.setAttribute) inp.setAttribute("aria-invalid", msg ? "true" : "false"); };
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = form.elements.name.value.trim(), contact = form.elements.contact.value.trim();
+    const digits = contact.replace(/\D/g, "");
+    setErr("name", name ? "" : "Напишите имя — так Вера обратится к вам");
+    const contactOk = /^@[A-Za-z0-9_]{4,}$/.test(contact) || (digits.length >= 10 && digits.length <= 11);
+    setErr("contact", contactOk ? "" : "Нужен телефон из 10–11 цифр или ник вида @username");
+    setErr("ok", form.elements.ok.checked ? "" : "Без согласия мы не сможем вам написать");
+    if (!name || !contactOk || !form.elements.ok.checked) { form.querySelector('[aria-invalid="true"]')?.focus(); return; }
+    const ch = form.elements.channel.value;
+    const slot = fSlot.value ? fSlot.options[fSlot.selectedIndex].text : "время подберём вместе";
+    const how = ch === "Звонок" ? `перезвонит в течение ${C.replyMinutes} минут` : `напишет в ${ch} в течение ${C.replyMinutes} минут`;
+    $("#doneText").textContent = `${name}, ${C.teacher} ${how}. Пробное: ${fFormat.options[fFormat.selectedIndex].text}, ${slot}.${quizNote ? " " + quizNote : ""}`;
+    form.classList.add("sent");
+  });
+  ["name", "contact"].forEach(n => form.elements[n].addEventListener("input", () => setErr(n, "")));
+  form.elements.ok.addEventListener("change", () => setErr("ok", ""));
+
+  /* ---------- подбор за 3 вопроса ---------- */
+  const answers = [];
+  const track = $("#qTrack"), step = $("#qStep"), result = $("#qResult");
+  const drawTrack = n => { track.innerHTML = C.quiz.map((_, i) => `<span class="${i <= n ? "on" : ""}"></span>`).join("<i></i>"); };
+  const showQ = i => {
+    drawTrack(i); result.classList.remove("show"); step.hidden = false;
+    const q = C.quiz[i];
+    step.innerHTML = `<h3>${esc(q.q)}</h3><div class="chips">${q.a.map((a, j) => `<button type="button" class="chip" aria-pressed="false" data-a="${j}">${esc(a)}</button>`).join("")}</div>`;
+    step.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+      b.setAttribute("aria-pressed", "true"); answers[i] = +b.dataset.a;
+      setTimeout(() => i + 1 < C.quiz.length ? showQ(i + 1) : showResult(), reduced ? 0 : 260);
+    }));
+  };
+  const showResult = () => {
+    drawTrack(C.quiz.length);
+    const fmtId = ["online", "group", "personal"][answers[2]];
+    const fmt = C.formats.find(f => f.id === fmtId);
+    const focus = ["мягкая практика для спины", "растяжка без рывков", "спокойная практика с дыханием", "сила и баланс"][answers[1]];
+    const level = ["с нуля", "в спокойном темпе", "с усложнениями"][answers[0]];
+    $("#qText").textContent = `Вам подойдёт ${fmt.name} — ${focus}, ${level}.`;
+    quizNote = `Подбор: ${C.quiz.map((q, i) => q.a[answers[i]].toLowerCase()).join(", ")}.`;
+    fFormat.value = fmtId;
+    step.hidden = true; result.classList.add("show");
+  };
+  $("#qAgain").addEventListener("click", () => { answers.length = 0; quizNote = ""; showQ(0); });
+  showQ(0);
+
+  /* ---------- домашка → Telegram ---------- */
+  const drop = $("#drop"), fileIn = $("#hwFile"), preview = $("#preview"), bar = $("#bar"), status = $("#hwStatus"), feed = $("#tgFeed");
+  const H = C.homework;
+  const now = () => new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+  let busy = false;
+  const setStatus = (main, sub) => { status.innerHTML = esc(main) + (sub ? `<small>${esc(sub)}</small>` : ""); };
+  const thumbFrom = (src, isVideo) => new Promise(res => {
+    if (!isVideo) return res(`<img src="${src}" alt="">`);
+    const v = document.createElement("video"); v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = src;
+    const done = () => { try { const c = document.createElement("canvas"); c.width = 640; c.height = 400; const x = c.getContext("2d"); const r = Math.max(640 / v.videoWidth, 400 / v.videoHeight); x.drawImage(v, (640 - v.videoWidth * r) / 2, (400 - v.videoHeight * r) / 2, v.videoWidth * r, v.videoHeight * r); res(`<img src="${c.toDataURL("image/jpeg", .8)}" alt="">`); } catch (e) { res(""); } };
+    v.addEventListener("loadeddata", () => { v.currentTime = Math.min(1, (v.duration || 2) / 3); }, { once: true });
+    v.addEventListener("seeked", done, { once: true }); v.addEventListener("error", () => res(""), { once: true });
+    setTimeout(() => res(""), 4000);
+  });
+  const send = async (src, isVideo, name, sizeMb) => {
+    if (busy) return; busy = true;
+    drop.classList.add("has-file");
+    preview.innerHTML = isVideo ? `<video src="${src}" controls playsinline muted></video>` : `<img src="${src}" alt="Ваше фото для домашнего задания">`;
+    const total = Math.max(1.2, Math.min(4, sizeMb / 6 + 1.2)) * 1000, t0 = performance.now();
+    const thumb = thumbFrom(src, isVideo);
+    await new Promise(res => {
+      if (reduced) return res();
+      const tick = () => {
+        const k = Math.min(1, (performance.now() - t0) / total), pct = Math.round((1 - Math.pow(1 - k, 2)) * 100);
+        bar.style.setProperty("--pct", pct + "%");
+        setStatus(`Загружаем… ${pct}%`, name);
+        k < 1 ? requestAnimationFrame(tick) : res();
+      };
+      requestAnimationFrame(tick);
+    });
+    bar.style.setProperty("--pct", "100%");
+    setStatus(`Отправлено: ${C.teacher} получила уведомление`, "Ответ придёт сюда и в Telegram");
+    $("#tgEmpty")?.remove();
+    const th = await thumb;
+    const m = document.createElement("div"); m.className = "msg";
+    m.innerHTML = `${th ? `<div class="thumb">${th}</div>` : ""}<b>Новое домашнее задание</b><br>${esc(H.student)} · ${esc(H.lesson)}<br>${isVideo ? "Видео" : "Фото"}${sizeMb ? `, ${sizeMb.toFixed(1).replace(".", ",")} МБ` : ""}<time>${now()}</time>`;
+    const kb = document.createElement("div"); kb.className = "kb";
+    kb.innerHTML = `<button type="button" data-r="ok">Принять</button><button type="button" data-r="redo">На доработку</button><button type="button" class="wide" data-r="voice">Ответить голосом</button>`;
+    feed.append(m, kb);
+    feed.scrollTop = feed.scrollHeight;
+    if (innerWidth < 1000) $(".phone").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
+    kb.addEventListener("click", e => {
+      const r = e.target.closest("button")?.dataset.r; if (!r) return;
+      kb.querySelectorAll("button").forEach(b => b.disabled = true);
+      const sys = document.createElement("div"); sys.className = "msg sys";
+      if (r === "ok") { sys.textContent = "Задание принято · ученик получил отметку"; setStatus(`${C.teacher} приняла задание`, "Следующий урок открыт"); }
+      if (r === "redo") { sys.textContent = "Отправлено на доработку"; setStatus(`${C.teacher} просит переснять`, "Поставьте камеру сбоку, на уровне таза, чтобы была видна вся спина"); }
+      if (r === "voice") { sys.textContent = "Голосовой разбор отправлен ученику · 0:38"; setStatus(`${C.teacher} ответила голосом`, "Откройте Telegram, чтобы послушать разбор"); }
+      feed.append(sys); feed.scrollTop = feed.scrollHeight; busy = false;
+    });
+  };
+  const handle = f => { if (!f) return; if (!/^(video|image)\//.test(f.type)) { setStatus("Нужен файл видео или фото", "Например, MP4 или JPG с телефона"); return; } send(URL.createObjectURL(f), f.type.startsWith("video"), f.name, f.size / 1048576); };
+  fileIn.addEventListener("change", () => handle(fileIn.files[0]));
+  $("#hwSample").addEventListener("click", () => send(H.sample, false, "пример.jpg", 2.4));
+  ["dragenter", "dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", e => handle(e.dataTransfer.files[0]));
+
+  /* ---------- первый экран: видео идёт вместе с прокруткой ---------- */
+  const hero = $("#hero"), video = $("#heroVideo"), copy = $("#heroCopy"), end = $("#heroEnd"), hint = $("#scrollHint");
+  const tickLine = $("#tickLine"), cues = $("#cues"), cueSvg = $("#cueLines"), bright = $("#heroBright"), top = $("#top");
+  const IMG = { w: 2752, h: 1536 };
+  const map = (fx, fy) => {   // точка кадра (доли) → координаты на экране при object-fit: cover
+    const W = innerWidth, Hh = innerHeight, r = Math.max(W / IMG.w, Hh / IMG.h), dw = IMG.w * r, dh = IMG.h * r;
+    return { x: (W - dw) / 2 + fx * dw, y: (Hh - dh) / 2 + fy * dh };
+  };
+  const layout = () => {
+    if (innerWidth < 1000) return;
+    const t = map(C.hero.tick.matLeft, C.hero.tick.y), gut = parseFloat(getComputedStyle(copy).left) || 72;
+    root.style.setProperty("--tick-y", t.y + "px");
+    root.style.setProperty("--tick-w", t.x + "px");
+    root.style.setProperty("--copy-b", (innerHeight - t.y) + "px");
+    root.style.setProperty("--copy-w", Math.max(320, t.x - gut - 48) + "px");
+    cueSvg.innerHTML = ""; cues.querySelectorAll(".cue").forEach(n => n.remove());
+    const labelX = Math.max(map(.845, 0).x, innerWidth - 240);
+    root.style.setProperty("--cue-w", Math.max(140, innerWidth - labelX - 20) + "px");
+    C.hero.cues.forEach(c => {
+      const p = map(c.x, c.y);
+      cueSvg.insertAdjacentHTML("beforeend", `<line x1="${p.x}" y1="${p.y}" x2="${labelX - 6}" y2="${p.y}"/><circle cx="${p.x}" cy="${p.y}" r="4"/>`);
+      const d = document.createElement("span"); d.className = "cue"; d.textContent = c.text; d.style.left = labelX + "px"; d.style.top = p.y + "px"; cues.append(d);
+    });
+  };
+  layout(); addEventListener("resize", layout);
+
+  if (!reduced) {
+    let ready = false, visible = false, raf = 0, media = video, scrub = () => {};
+    if (innerWidth < 700) {
+      // Телефон: кадры ролика на холсте вместо <video> — встроенные браузеры Android перехватывают видео своим плеером
+      const N = 71, src = i => `seq-m/f${String(i + 1).padStart(3, "0")}.webp`;
+      const cv = document.createElement("canvas");
+      cv.className = "hero-media hero-video"; cv.width = 608; cv.height = 1080; cv.setAttribute("aria-hidden", "true");
+      video.replaceWith(cv); media = cv;
+      const ctx = cv.getContext("2d"), frames = new Array(N);
+      let shown = -1, cur = 0;
+      const load = i => new Promise(res => { const im = new Image(); im.onload = () => { frames[i] = im; res(); }; im.onerror = res; im.src = src(i); });
+      load(0).then(() => { ready = true; const seen = new Set([0]); [8, 4, 2, 1].forEach(st => { for (let i = 0; i < N; i += st) if (!seen.has(i)) { seen.add(i); load(i); } }); });
+      scrub = p => {
+        cur += (p - cur) * 0.3; if (Math.abs(p - cur) < 0.001) cur = p;
+        const t = Math.round(cur * (N - 1)); let i = -1;
+        for (let d = 0; d < N && i < 0; d++) { if (frames[t - d]) i = t - d; else if (frames[t + d]) i = t + d; }
+        if (i >= 0 && i !== shown) { ctx.drawImage(frames[i], 0, 0, cv.width, cv.height); shown = i; }
+      };
+    } else {
+      // Компьютер: ролик 1920 px, play() не вызываем — только перемотка по прокрутке
+      video.src = "video/hero.mp4";
+      let want = 0;
+      video.addEventListener("loadeddata", () => { ready = true; });
+      const seek = () => { if (!ready || video.seeking) return; if (Math.abs(video.currentTime - want) > 0.02) video.currentTime = want; };
+      video.addEventListener("seeked", seek);
+      scrub = p => { if (!video.duration) return; const target = p * (video.duration - 0.05); want += (target - want) * 0.25; if (Math.abs(target - want) < 0.004) want = target; seek(); };
+    }
+    const clamp01 = x => Math.min(1, Math.max(0, x));
+    const progress = () => { const r = hero.getBoundingClientRect(), span = hero.offsetHeight - innerHeight; return clamp01(-r.top / span); };
+    const tick = () => {
+      const p = progress(), unique = root.dataset.preset === "unique";
+      if (ready && !unique) scrub(p);
+      media.classList.toggle("ready", ready && p > 0.003);
+      if (unique) bright.style.transform = `scale(${1 + p * 0.14})`;
+      const cueFade = clamp01(1 - p / 0.08);
+      cues.style.opacity = cueFade; tickLine.style.opacity = 0.5 * cueFade;
+      const fade = clamp01((p - 0.28) / 0.22), show = clamp01((p - 0.55) / 0.22);
+      copy.style.opacity = 1 - fade; copy.style.transform = `translateY(${-fade * 28}px)`;
+      copy.style.pointerEvents = fade > 0.5 ? "none" : "";
+      end.style.opacity = show; end.style.transform = `translateY(${(1 - show) * 24}px)`;
+      end.style.pointerEvents = show > 0.5 ? "auto" : "none";
+      hint.style.opacity = clamp01(1 - p / 0.05);
+      top.classList.toggle("solid", hero.getBoundingClientRect().bottom < 80);
+    };
+    const loop = () => { raf = 0; tick(); if (visible) raf = requestAnimationFrame(loop); };
+    new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; if (visible && !raf) raf = requestAnimationFrame(loop); if (!visible) top.classList.add("solid"); }).observe(hero);
+    tick();
+  } else {
+    video.remove();
+    const solid = () => top.classList.toggle("solid", scrollY > innerHeight - 80);
+    addEventListener("scroll", solid, { passive: true }); solid();
+  }
+
+  /* ---------- панель «Настроить вид» ---------- */
+  const PRESETS = { base: "Базовый", unique: "Яркий" };
+  const MATS = {
+    base:   [["#1F4D47", "Лесной"], ["#2B3033", "Графит"], ["#4A2545", "Слива"], ["#1D3F6E", "Океан"]],
+    unique: [["#FF5A36", "Коралл"], ["#FF4F9A", "Фуксия"], ["#FFB000", "Манго"], ["#14C2A3", "Мята"]]
+  };
+  const FONTS = { base: [["Geologica", "Геология"], ["Tenor Sans", "Тенор"], ["Dela Gothic One", "Дела"]], unique: [["Dela Gothic One", "Дела"], ["Geologica", "Геология"], ["Tenor Sans", "Тенор"]] };
+  const SIZES = [["0.94", "Мельче"], ["1", "Обычный"], ["1.08", "Крупнее"]];
+  const DEF = { preset: "base", mat: null, font: null, size: "1", photo: 100 };
+  let S = Object.assign({}, DEF, store.get("view", {}));
+  if (!PRESETS[S.preset]) S = Object.assign({}, DEF);
+  const shade = (hex, k) => { const n = parseInt(hex.slice(1), 16), f = c => Math.round(Math.max(0, Math.min(255, c * k))); return "#" + [n >> 16, n >> 8 & 255, n & 255].map(c => f(c).toString(16).padStart(2, "0")).join(""); };
+  const lum = hex => { const n = parseInt(hex.slice(1), 16); return [n >> 16, n >> 8 & 255, n & 255].map(c => { c /= 255; return c <= .03928 ? c / 12.92 : Math.pow((c + .055) / 1.055, 2.4); }).reduce((a, c, i) => a + c * [.2126, .7152, .0722][i], 0); };
+  const seg = (box, items, cur, onPick) => {
+    box.innerHTML = items.map(([v, l]) => `<button type="button" aria-pressed="${v === cur}" data-v="${v}">${l}</button>`).join("");
+    box.onclick = e => { const b = e.target.closest("button"); if (b) onPick(b.dataset.v); };
+  };
+  const apply = () => {
+    root.dataset.preset = S.preset;
+    const mat = S.mat || MATS[S.preset][0][0];
+    const st = root.style;
+    ["--mat", "--mat-deep", "--on-mat", "--on-mat-soft", "--line", "--display"].forEach(p => st.removeProperty(p));
+    if (S.mat) {
+      const light = lum(mat) > 0.18, u = S.preset === "unique";
+      st.setProperty("--mat", mat); st.setProperty("--mat-deep", shade(mat, .82));
+      st.setProperty("--on-mat", light ? (u ? "#24104F" : "#16211F") : "#F2F0E9");
+      st.setProperty("--on-mat-soft", light ? (u ? "rgba(36,16,79,.82)" : "rgba(22,33,31,.8)") : "rgba(242,240,233,.78)");
+      st.setProperty("--line", light ? (u ? "rgba(61,27,184,.6)" : "rgba(22,33,31,.4)") : "rgba(242,240,233,.42)");
+    }
+    if (S.font) st.setProperty("--display", `"${S.font}",system-ui,sans-serif`);
+    st.setProperty("--t-scale", S.size); st.setProperty("--h-scale", S.size);
+    st.setProperty("--photo", S.photo / 100);
+    seg($("#tPreset"), Object.entries(PRESETS), S.preset, v => { S = Object.assign({}, S, { preset: v, mat: null, font: null }); save(); });
+    $("#tMat").innerHTML = MATS[S.preset].map(([c, l]) => `<button type="button" aria-label="${l}" title="${l}" style="background:${c}" aria-pressed="${c === mat}" data-v="${c}"></button>`).join("");
+    $("#tMat").onclick = e => { const b = e.target.closest("button"); if (b) { S.mat = b.dataset.v === MATS[S.preset][0][0] ? null : b.dataset.v; save(); } };
+    seg($("#tFont"), FONTS[S.preset], S.font || FONTS[S.preset][0][0], v => { S.font = v === FONTS[S.preset][0][0] ? null : v; save(); });
+    seg($("#tSize"), SIZES, S.size, v => { S.size = v; save(); });
+    $("#tPhoto").value = S.photo;
+    requestAnimationFrame(layout);
+  };
+  const save = () => { store.set("view", S); apply(); };
+  $("#tPhoto").addEventListener("input", e => { S.photo = +e.target.value; save(); });
+  $("#tReset").addEventListener("click", () => { S = Object.assign({}, DEF); save(); });
+  const tune = $("#tune"), tuneBtn = $("#tuneBtn");
+  const openTune = o => { tune.classList.toggle("open", o); tuneBtn.setAttribute("aria-expanded", o); };
+  tuneBtn.addEventListener("click", () => openTune(!tune.classList.contains("open")));
+  addEventListener("keydown", e => { if (e.key === "Escape") openTune(false); });
+  // composedPath — путь щелчка в момент нажатия: кнопки панели перерисовываются, и e.target к этому времени уже вне панели
+  document.addEventListener("click", e => { const path = e.composedPath(); if (tune.classList.contains("open") && !path.includes(tune) && !path.includes(tuneBtn)) openTune(false); });
+  apply();
+})();
+</script>
+</body>
+</html>
