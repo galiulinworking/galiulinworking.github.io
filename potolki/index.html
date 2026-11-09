@@ -395,7 +395,7 @@ const CONFIG = {
         <source media="(max-width: 699px)" srcset="img/hero-m.jpg">
         <img class="hero-media ph" src="img/hero.jpg" alt="Гостиная с глянцевым натяжным потолком, световыми линиями и точечными светильниками">
       </picture>
-      <video class="hero-video hero-media ph" id="heroVideo" muted playsinline preload="auto" aria-hidden="true"></video>
+      <video class="hero-video hero-media ph" id="heroVideo" muted playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" aria-hidden="true"></video>
       <div class="hero-shade"></div>
       <span class="demo-badge" data-bind="demoBadge"></span>
       <div class="hero-copy wrap" id="heroCopy">
@@ -606,18 +606,49 @@ const CONFIG = {
   /* ---------- Первый экран: видео идёт вместе с прокруткой ---------- */
   const hero = $("#hero"), video = $("#heroVideo"), copy = $("#heroCopy"), end = $("#heroEnd"), hint = $("#scrollHint");
   if (!reduced) {
-    // На телефоне — вертикальный ролик 608×1080, на компьютере — 1920×1072
-    video.src = innerWidth < 700 ? "video/hero-m.mp4" : "video/hero.mp4";
-    let want = 0, ready = false, visible = false, raf = 0;
-    video.addEventListener("loadeddata", () => { ready = true; });
-    // Новая перемотка — только когда закончилась предыдущая (иначе на слабом железе кадр «стоит»)
-    const seek = () => {
-      if (!ready || video.seeking) return;
-      if (Math.abs(video.currentTime - want) > 0.02) video.currentTime = want;
-    };
-    video.addEventListener("seeked", seek);
-    const unlock = () => { const p = video.play(); if (p) p.then(() => video.pause()).catch(() => {}); removeEventListener("touchstart", unlock); };
-    addEventListener("touchstart", unlock, { passive: true });
+    let ready = false, visible = false, raf = 0, media = video, scrub;
+    if (innerWidth < 700) {
+      // Телефон: кадры ролика на холсте вместо <video>. Встроенные браузеры Android (Xiaomi и др.)
+      // перехватывают <video> своим плеером с кнопкой паузы — картинки перехватить нечем.
+      const N = 71, src = i => `seq-m/f${String(i + 1).padStart(3, "0")}.webp`;
+      const cv = document.createElement("canvas");
+      cv.className = "hero-video hero-media ph"; cv.width = 608; cv.height = 1080; cv.setAttribute("aria-hidden", "true");
+      video.replaceWith(cv); media = cv;
+      const ctx = cv.getContext("2d"), frames = new Array(N);
+      let shown = -1, cur = 0;
+      const load = i => new Promise(res => { const im = new Image(); im.onload = () => { frames[i] = im; res(); }; im.onerror = res; im.src = src(i); });
+      // Сначала первый кадр, затем каждый 8-й (грубая анимация уже работает), потом остальные
+      load(0).then(() => {
+        ready = true;
+        const seen = new Set([0]);
+        [8, 4, 2, 1].forEach(step => { for (let i = 0; i < N; i += step) if (!seen.has(i)) { seen.add(i); load(i); } });
+      });
+      scrub = p => {
+        cur += (p - cur) * 0.3; if (Math.abs(p - cur) < 0.001) cur = p;
+        const t = Math.round(cur * (N - 1));
+        let i = -1;
+        for (let d = 0; d < N && i < 0; d++) { if (frames[t - d]) i = t - d; else if (frames[t + d]) i = t + d; }   // ближайший загруженный кадр
+        if (i >= 0 && i !== shown) { ctx.drawImage(frames[i], 0, 0, cv.width, cv.height); shown = i; }
+      };
+    } else {
+      // Компьютер: ролик 1920×1072. play() не вызываем — только перемотка по прокрутке
+      video.src = "video/hero.mp4";
+      let want = 0;
+      video.addEventListener("loadeddata", () => { ready = true; });
+      // Новая перемотка — только когда закончилась предыдущая (иначе на слабом железе кадр «стоит»)
+      const seek = () => {
+        if (!ready || video.seeking) return;
+        if (Math.abs(video.currentTime - want) > 0.02) video.currentTime = want;
+      };
+      video.addEventListener("seeked", seek);
+      scrub = p => {
+        if (!video.duration) return;
+        const target = p * (video.duration - 0.05);
+        want += (target - want) * 0.25;
+        if (Math.abs(target - want) < 0.004) want = target;
+        seek();
+      };
+    }
     const progress = () => {
       const r = hero.getBoundingClientRect(), span = hero.offsetHeight - innerHeight;
       return Math.min(1, Math.max(0, -r.top / span));
@@ -625,14 +656,9 @@ const CONFIG = {
     const clamp01 = x => Math.min(1, Math.max(0, x));
     const tick = () => {
       const p = progress();
-      if (ready && video.duration) {
-        const target = p * (video.duration - 0.05);
-        want += (target - want) * 0.25;
-        if (Math.abs(target - want) < 0.004) want = target;
-        seek();
-      }
-      // Пока страница наверху — чёткое фото; видео проявляется с началом прокрутки
-      video.classList.toggle("ready", ready && p > 0.003);
+      if (ready) scrub(p);
+      // Пока страница наверху — чёткое фото; ролик проявляется с началом прокрутки
+      media.classList.toggle("ready", ready && p > 0.003);
       // Первый текст уходит, второй приходит без пустой паузы между ними
       const fade = clamp01((p - 0.3) / 0.25), show = clamp01((p - 0.55) / 0.25);
       copy.style.opacity = 1 - fade; copy.style.transform = `translateY(${-fade * 30}px)`;
