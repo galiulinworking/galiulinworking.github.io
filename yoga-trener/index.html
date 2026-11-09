@@ -22,7 +22,7 @@
   --gut:clamp(16px,5vw,72px); --max:1240px; --r-mat:28px; --r-ui:12px;
 }
 :root[data-preset="unique"]{
-  --mat:#FF5A36; --mat-deep:#E8461F; --on-mat:#24104F; --on-mat-soft:rgba(36,16,79,.82); --line:rgba(61,27,184,.6);
+  --mat:#FF5A36; --mat-deep:#E8461F; --on-mat:#24104F; --on-mat-soft:#24104F; --line:rgba(61,27,184,.6);
   --floor:#F1EEFA; --paper:#FAF8FF; --ink:#24104F; --ink-soft:#4A3A7A; --rule:rgba(36,16,79,.24);
   --act:#D7FF3C; --act-ink:#24104F;
   --display:"Dela Gothic One",system-ui,sans-serif;
@@ -106,10 +106,12 @@ p{margin:0}
 /* ---------- коврик: общая секция ---------- */
 .sec{padding:clamp(72px,10vw,136px) 0}
 .mat{position:relative;background:var(--mat);color:var(--on-mat);border-radius:var(--r-mat);margin-inline:clamp(8px,1.6vw,24px);padding:clamp(64px,8vw,112px) 0}
-.mat::before,.mat::after{content:"";position:absolute;left:50%;width:min(300px,46%);height:26px;transform:translateX(-50%);pointer-events:none;
-  background:linear-gradient(var(--line),var(--line)) 50% 0/1px 100% no-repeat,linear-gradient(var(--line),var(--line)) 0 100%/42% 1px no-repeat,linear-gradient(var(--line),var(--line)) 100% 100%/42% 1px no-repeat}
-.mat::before{top:22px}
-.mat::after{bottom:22px;transform:translateX(-50%) scaleY(-1)}
+/* центральная линия коврика проходит через всю секцию; колонки делятся по ней; у краёв — отметки для ладоней и стоп */
+.mat::before{content:"";position:absolute;left:50%;top:22px;bottom:22px;width:1px;background:var(--line);pointer-events:none}
+.mat::after{content:"";position:absolute;left:50%;top:22px;bottom:22px;width:min(300px,46%);transform:translateX(-50%);pointer-events:none;
+  background:linear-gradient(var(--line),var(--line)) 0 26px/42% 1px no-repeat,linear-gradient(var(--line),var(--line)) 100% 26px/42% 1px no-repeat,linear-gradient(var(--line),var(--line)) 0 calc(100% - 26px)/42% 1px no-repeat,linear-gradient(var(--line),var(--line)) 100% calc(100% - 26px)/42% 1px no-repeat}
+.mat>.wrap{position:relative;z-index:1}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(56px,7vw,112px);align-items:start}
 .head{display:flex;align-items:flex-end;gap:24px;margin-bottom:clamp(36px,5vw,64px)}
 .head h2{flex:0 1 auto;min-width:0;max-width:16ch;overflow-wrap:break-word}
 .head::after{content:"";flex:1;height:1px;margin-bottom:.55em;background:var(--rule)}
@@ -118,8 +120,9 @@ p{margin:0}
 .mat .head-note{color:var(--on-mat-soft)}
 
 /* ---------- форматы ---------- */
-.formats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,24px)}
-.fmt{position:relative;display:flex;flex-direction:column;background:var(--mat);color:var(--on-mat);border-radius:22px;overflow:hidden}
+.formats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--mat);border-radius:var(--r-mat);overflow:hidden}
+.fmt{position:relative;display:flex;flex-direction:column;color:var(--on-mat)}
+.fmt+.fmt .fmt-body{box-shadow:inset 1px 0 0 var(--line)}
 .fmt img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(var(--photo))}
 .fmt-body{position:relative;display:flex;flex-direction:column;gap:10px;flex:1;padding:22px 22px 64px}
 .fmt-body::after{content:"";position:absolute;left:50%;bottom:18px;width:60%;height:18px;transform:translateX(-50%);
@@ -127,11 +130,8 @@ p{margin:0}
 .fmt p{color:var(--on-mat-soft)}
 .fmt .price{margin-top:auto;padding-top:10px;font:600 1.15rem/1.2 var(--text)}
 .fmt .btn{margin-top:14px;align-self:flex-start;min-height:44px}
-.on-light .fmt .btn-act{background:var(--act);color:var(--act-ink)}
-.on-light .fmt .btn-act:hover{background:color-mix(in srgb,var(--act) 86%,#fff)}
 
 /* ---------- подбор ---------- */
-.quiz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:clamp(28px,5vw,72px);align-items:start}
 .q-track{display:flex;align-items:center;gap:0;margin-bottom:28px}
 .q-track span{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line);flex:none;transition:background-color .3s}
 .q-track span.on{background:var(--on-mat);box-shadow:none}
@@ -168,7 +168,9 @@ p{margin:0}
 .legend i{display:inline-block;width:22px;height:12px;border-radius:4px;vertical-align:-1px;margin-right:8px}
 
 /* ---------- домашка ---------- */
-.hw{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(28px,5vw,72px);align-items:center}
+.hw{align-items:center}
+.hw-flow{position:absolute;z-index:2;left:50%;top:22px;width:3px;margin-left:-1.5px;height:calc((100% - 44px)*var(--k,0));border-radius:2px;background:var(--act);pointer-events:none}
+.hw-flow::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--act);box-shadow:0 0 0 3px var(--mat);opacity:var(--dot,0)}
 .task{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px}
 .task img{width:96px;height:72px;border-radius:10px;object-fit:cover;flex:none}
 .task b{display:block;font-weight:600}
@@ -187,7 +189,7 @@ p{margin:0}
 .preview video,.preview img{width:100%;max-height:320px;object-fit:contain;margin:auto}
 .has-file .preview{display:block}
 .has-file .drop-empty{display:none}
-.bar{position:relative;height:28px;margin-top:20px}
+.bar{position:relative;height:28px;margin-top:20px;display:none}
 .bar::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
 .bar i{position:absolute;left:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:var(--act);width:var(--pct,0%)}
 .bar b{position:absolute;top:50%;left:var(--pct,0%);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--act);box-shadow:0 0 0 3px var(--mat)}
@@ -228,6 +230,7 @@ p{margin:0}
 
 /* ---------- вопросы ---------- */
 .faq{max-width:860px}
+.split .head{margin-bottom:0}
 .faq details{border-top:1px solid var(--line)}
 .faq details:last-child{border-bottom:1px solid var(--line)}
 .faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:22px 0;cursor:pointer;font:600 1.12rem/1.3 var(--text)}
@@ -304,7 +307,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   .tick-line,.cues,.scroll-hint{display:none}
   .hero-end .btn{width:100%}
   .formats{grid-template-columns:1fr;max-width:560px}
-  .quiz,.hw,.about,.final .wrap{grid-template-columns:1fr}
+  .fmt+.fmt .fmt-body{box-shadow:none}
+  .fmt+.fmt{border-top:1px solid var(--line)}
+  .split,.about,.final .wrap{grid-template-columns:1fr;row-gap:32px}
+  .mat::before,.hw-flow{display:none}
+  .bar{display:block}
   .about img{max-height:520px}
   .facts li{grid-template-columns:1fr;gap:2px}
   .head{display:block;margin-bottom:32px}
@@ -437,7 +444,7 @@ const CONFIG = {
   </section>
 
   <section class="mat" id="quiz">
-    <div class="wrap quiz">
+    <div class="wrap split quiz">
       <div class="quiz-aside">
         <h2>Подберём практику за три вопроса</h2>
         <p>Без теста на гибкость. Ответы попадут в заявку, и Вера увидит их до первого занятия.</p>
@@ -467,10 +474,10 @@ const CONFIG = {
   </section>
 
   <section class="mat" id="homework">
-    <div class="wrap">
-      <div class="head"><h2>Домашка уходит преподавателю в Telegram</h2></div>
-      <div class="hw">
+    <i class="hw-flow" aria-hidden="true"></i>
+    <div class="wrap split hw">
         <div>
+          <div class="head" style="margin-bottom:28px"><h2>Домашка уходит преподавателю в Telegram</h2></div>
           <div class="task"><img src="img/homework.jpg" alt="" loading="lazy"><div><b data-bind="homework.lesson"></b><span data-bind="homework.hint"></span></div></div>
           <div class="drop" id="drop">
             <div class="drop-empty">
@@ -495,7 +502,6 @@ const CONFIG = {
             <div class="tg-feed" id="tgFeed"><p class="tg-empty" id="tgEmpty">Здесь появится уведомление: кто сдал, какой урок, видео и кнопки ответа.</p></div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
@@ -511,7 +517,7 @@ const CONFIG = {
   </section>
 
   <section class="mat" id="faq">
-    <div class="wrap">
+    <div class="wrap split">
       <div class="head"><h2>Частые вопросы</h2></div>
       <div class="faq" id="faqList"></div>
     </div>
@@ -576,7 +582,7 @@ const CONFIG = {
     <article class="fmt">
       <img src="${f.photo}" alt="${esc(f.name)}" loading="lazy">
       <div class="fmt-body"><h3>${esc(f.name)}</h3><p>${esc(f.text)}</p><span class="price num">${esc(f.price)}</span>
-        <a class="btn btn-act" href="#book" data-book data-format="${f.id}">Выбрать</a></div>
+        <a class="btn btn-line" href="#book" data-book data-format="${f.id}">Выбрать</a></div>
     </article>`).join("");
 
   $("#facts").innerHTML = C.about.facts.map(([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v)}</span></li>`).join("");
@@ -661,7 +667,7 @@ const CONFIG = {
   showQ(0);
 
   /* ---------- домашка → Telegram ---------- */
-  const drop = $("#drop"), fileIn = $("#hwFile"), preview = $("#preview"), bar = $("#bar"), status = $("#hwStatus"), feed = $("#tgFeed");
+  const hwSec = $("#homework"), drop = $("#drop"), fileIn = $("#hwFile"), preview = $("#preview"), bar = $("#bar"), status = $("#hwStatus"), feed = $("#tgFeed");
   const H = C.homework;
   const now = () => new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
   let busy = false;
@@ -685,12 +691,14 @@ const CONFIG = {
       const tick = () => {
         const k = Math.min(1, (performance.now() - t0) / total), pct = Math.round((1 - Math.pow(1 - k, 2)) * 100);
         bar.style.setProperty("--pct", pct + "%");
+        hwSec.style.setProperty("--k", pct / 100); hwSec.style.setProperty("--dot", 1);
         setStatus(`Загружаем… ${pct}%`, name);
         k < 1 ? requestAnimationFrame(tick) : res();
       };
       requestAnimationFrame(tick);
     });
     bar.style.setProperty("--pct", "100%");
+    hwSec.style.setProperty("--k", 1); hwSec.style.setProperty("--dot", 0);
     setStatus(`Отправлено: ${C.teacher} получила уведомление`, "Ответ придёт сюда и в Telegram");
     $("#tgEmpty")?.remove();
     const th = await thumb;
@@ -722,6 +730,16 @@ const CONFIG = {
   const hero = $("#hero"), video = $("#heroVideo"), copy = $("#heroCopy"), end = $("#heroEnd"), hint = $("#scrollHint");
   const tickLine = $("#tickLine"), cues = $("#cues"), cueSvg = $("#cueLines"), bright = $("#heroBright"), top = $("#top");
   const IMG = { w: 2752, h: 1536 };
+  // Смещение тела в ролике (доли кадра) по доле времени — замерено по кадрам 0 / 1,5 / 3 / 4,5 / 5,8 с
+  const TRACK = [[0, 0, 0], [.255, -.004, .030], [.51, -.010, .077], [.766, -.014, .100], [1, -.017, .131]];
+  const drift = f => {
+    f = Math.min(1, Math.max(0, f));
+    for (let i = 1; i < TRACK.length; i++) if (f <= TRACK[i][0]) {
+      const [f0, x0, y0] = TRACK[i - 1], [f1, x1, y1] = TRACK[i], k = (f - f0) / (f1 - f0);
+      return [x0 + (x1 - x0) * k, y0 + (y1 - y0) * k];
+    }
+    return [TRACK[TRACK.length - 1][1], TRACK[TRACK.length - 1][2]];
+  };
   const map = (fx, fy) => {   // точка кадра (доли) → координаты на экране при object-fit: cover
     const W = innerWidth, Hh = innerHeight, r = Math.max(W / IMG.w, Hh / IMG.h), dw = IMG.w * r, dh = IMG.h * r;
     return { x: (W - dw) / 2 + fx * dw, y: (Hh - dh) / 2 + fy * dh };
@@ -777,10 +795,21 @@ const CONFIG = {
       const p = progress(), unique = root.dataset.preset === "unique";
       if (ready && !unique) scrub(p);
       media.classList.toggle("ready", ready && p > 0.003);
-      if (unique) bright.style.transform = `scale(${1 + p * 0.14})`;
-      const cueFade = clamp01(1 - p / 0.08);
+      // Подсказки и линия разметки идут за телом: базовый шаблон — по опорным точкам ролика, яркий — вместе с приближением фото
+      if (unique) {
+        const s = 1 + p * 0.14;
+        bright.style.transform = `scale(${s})`;
+        cues.style.transformOrigin = "50% 50%"; cues.style.transform = `scale(${s})`;
+        tickLine.style.transformOrigin = `${innerWidth / 2}px ${innerHeight / 2 - tickLine.offsetTop}px`; tickLine.style.transform = `scale(${s})`;
+      } else if (media === video && video.duration) {
+        const [dx, dy] = drift(video.currentTime / video.duration), r = Math.max(innerWidth / IMG.w, innerHeight / IMG.h);
+        cues.style.transformOrigin = tickLine.style.transformOrigin = "";
+        cues.style.transform = `translate(${dx * IMG.w * r}px,${dy * IMG.h * r}px)`;
+        tickLine.style.transform = `translateY(${dy * IMG.h * r}px)`;
+      }
+      const cueFade = clamp01(1 - (p - 0.5) / 0.12);
       cues.style.opacity = cueFade; tickLine.style.opacity = 0.5 * cueFade;
-      const fade = clamp01((p - 0.28) / 0.22), show = clamp01((p - 0.55) / 0.22);
+      const fade = clamp01((p - 0.32) / 0.16), show = clamp01((p - 0.46) / 0.16);
       copy.style.opacity = 1 - fade; copy.style.transform = `translateY(${-fade * 28}px)`;
       copy.style.pointerEvents = fade > 0.5 ? "none" : "";
       end.style.opacity = show; end.style.transform = `translateY(${(1 - show) * 24}px)`;
@@ -823,7 +852,7 @@ const CONFIG = {
       const light = lum(mat) > 0.18, u = S.preset === "unique";
       st.setProperty("--mat", mat); st.setProperty("--mat-deep", shade(mat, .82));
       st.setProperty("--on-mat", light ? (u ? "#24104F" : "#16211F") : "#F2F0E9");
-      st.setProperty("--on-mat-soft", light ? (u ? "rgba(36,16,79,.82)" : "rgba(22,33,31,.8)") : "rgba(242,240,233,.78)");
+      st.setProperty("--on-mat-soft", light ? (u ? "#24104F" : "#16211F") : "rgba(242,240,233,.78)");
       st.setProperty("--line", light ? (u ? "rgba(61,27,184,.6)" : "rgba(22,33,31,.4)") : "rgba(242,240,233,.42)");
     }
     if (S.font) st.setProperty("--display", `"${S.font}",system-ui,sans-serif`);
