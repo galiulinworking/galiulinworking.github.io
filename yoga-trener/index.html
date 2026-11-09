@@ -111,7 +111,7 @@ p{margin:0}
 .mat::before{top:22px}
 .mat::after{bottom:22px;transform:translateX(-50%) scaleY(-1)}
 .head{display:flex;align-items:flex-end;gap:24px;margin-bottom:clamp(36px,5vw,64px)}
-.head h2{flex:none;max-width:16ch}
+.head h2{flex:0 1 auto;min-width:0;max-width:16ch;overflow-wrap:break-word}
 .head::after{content:"";flex:1;height:1px;margin-bottom:.55em;background:var(--rule)}
 .mat .head::after{background:var(--line)}
 .head-note{margin:-36px 0 48px;color:var(--ink-soft);max-width:52ch}
@@ -307,8 +307,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
   .quiz,.hw,.about,.final .wrap{grid-template-columns:1fr}
   .about img{max-height:520px}
   .facts li{grid-template-columns:1fr;gap:2px}
-  .head{margin-bottom:32px}
+  .head{display:block;margin-bottom:32px}
   .head::after{display:none}
+  .quiz-aside h2,.hero h1{overflow-wrap:break-word}
   .head-note{margin:-16px 0 32px}
   .week{grid-template-columns:repeat(7,minmax(148px,1fr));margin-right:calc(-1*var(--gut));padding-right:var(--gut)}
 }
