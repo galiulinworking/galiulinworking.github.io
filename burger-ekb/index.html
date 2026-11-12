@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Смэш — бургерная в Екатеринбурге до 2 ночи</title>
+<meta name="description" content="Смэш-бургеры, картошка и шейки. Доставка и самовывоз до 2 ночи.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500;1,600&family=IBM+Plex+Mono:wght@500&family=Golos+Text:wght@400;500;600&family=PT+Serif:ital,wght@0,700;1,700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<style>
+:root{--red:#B3121B;--ink:#2A1A16;--bg:#F6EFE3;--card:#FFFDF8;--line:rgba(179,18,27,.13);--display:'Lora',serif;--photo:1;--fs:1}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:400 calc(16px*var(--fs))/1.55 'Golos Text',sans-serif;color:var(--ink);background:var(--bg)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+.stripes{background:repeating-linear-gradient(90deg,transparent 0 46px,var(--line) 46px 47px),var(--bg)}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+h1,h2,h3{font-family:var(--display);color:var(--red);font-weight:600;letter-spacing:-.02em;line-height:1}
+h2{font-size:clamp(2.8rem,6vw,5rem)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:999px;border:0;background:var(--red);color:#fff;font:inherit;font-weight:600;cursor:pointer;transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.pill{display:inline-flex;align-items:center;padding:7px 14px;border-radius:999px;background:var(--card);box-shadow:0 1px 0 rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.05);color:var(--red)}
+.demo-badge{position:fixed;left:16px;bottom:16px;z-index:60;background:rgba(42,26,22,.85);color:#fff;font-size:12px;padding:7px 12px;border-radius:999px}
+.top{position:sticky;top:0;z-index:40}
+.top .wrap{display:flex;align-items:center;gap:10px;height:66px}
+.logo{font-family:var(--display);font-style:italic;font-size:1.5rem;color:var(--red);margin-right:auto}
+.top nav{display:flex;gap:8px}
+.status{display:inline-flex;align-items:center;gap:8px}
+.status i{width:8px;height:8px;border-radius:50%;background:#1F9D55;box-shadow:0 0 0 4px rgba(31,157,85,.2)}
+.status.closed i{background:#999;box-shadow:none}
+.hero{text-align:center;padding:26px 0 0}
+.hero h1{font-size:clamp(3.4rem,10vw,8.4rem);font-weight:500}
+.band{position:relative;margin-top:22px;height:min(62vh,640px)}
+.band>img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:brightness(var(--photo))}
+.sticker{position:absolute;width:76px;height:76px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));animation:bob 5s ease-in-out infinite}
+.s2{animation-delay:-1.2s}.s3{animation-delay:-2.4s}.s4{animation-delay:-3.6s}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+@media (prefers-reduced-motion:reduce){.sticker{animation:none}}
+.tape{position:absolute;left:6%;bottom:12%;background:#fff;color:var(--red);padding:6px 16px;transform:rotate(-4deg)}
+.hero .till{font-family:var(--display);font-style:italic;color:var(--red);font-size:clamp(3.2rem,9vw,7.6rem);font-weight:500;line-height:1.05;margin-top:18px}
+.hero .acts{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap;padding:16px 0 70px}
+.hero .acts a.tel{color:var(--red)}
+section{padding:96px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:40px}
+.head p{max-width:30ch;color:var(--red)}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.item{background:var(--card);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.item:first-child{grid-row:span 2}
+.item img{aspect-ratio:4/3;object-fit:cover;filter:brightness(var(--photo))}
+.item:first-child img{aspect-ratio:auto;flex:1;min-height:260px}
+.item div{padding:16px 18px 18px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
+.item h3{font-size:1.5rem;grid-column:1/-1}
+.item p{color:#7a5e55;font-size:.9rem;grid-column:1/-1}
+.item .price{font-weight:600;font-size:1.05rem}
+.item .kcal{color:#9a8076}
+.add{width:42px;height:42px;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:1.4rem;cursor:pointer;grid-row:3/5;grid-column:2}
+.add.done{background:#1F9D55}
+.combo{background:var(--red);color:#fff}
+.combo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.combo h2{color:#fff}
+.combo p{opacity:.85;margin:14px 0 24px;max-width:40ch}
+.combo .btn{background:#fff;color:var(--red)}
+.combo img{border-radius:24px;aspect-ratio:4/3;object-fit:cover;filter:brightness(var(--photo))}
+.place{display:grid;grid-template-columns:1.3fr 1fr;gap:24px}
+.place img{border-radius:24px;width:100%;height:100%;min-height:320px;object-fit:cover;filter:brightness(var(--photo))}
+.info{background:var(--card);border-radius:24px;padding:30px;display:flex;flex-direction:column;gap:18px}
+.info dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px}
+.info dt{color:#9a8076}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rev{border-top:2px solid var(--red);padding-top:16px}
+.rev p{font-family:var(--display);font-style:italic;font-size:1.3rem;color:var(--red);line-height:1.25}
+.rev small{display:block;margin-top:10px;color:#9a8076}
+footer.site{padding:40px 0 100px;color:var(--red)}
+footer.site .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.cartbar{position:fixed;left:50%;bottom:16px;transform:translate(-50%,160%);z-index:55;display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border-radius:999px;padding:8px 8px 8px 20px;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .3s;white-space:nowrap}
+.cartbar:not(.show){visibility:hidden}
+.cartbar.show{transform:translate(-50%,0)}
+.cartbar .btn{padding:10px 18px}
+.drawer{position:fixed;inset:0;z-index:70;display:none;background:rgba(42,26,22,.45)}
+.drawer.open{display:flex;justify-content:flex-end}
+.drawer .panel{width:min(420px,100%);height:100%;background:var(--bg);padding:24px;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.drawer h3{font-size:2.2rem}
+.line{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 0}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--red);background:none;color:var(--red);cursor:pointer;font:inherit}
+.drawer input{width:100%;font:inherit;padding:13px 16px;border-radius:14px;border:1px solid rgba(0,0,0,.12);background:#fff}
+.seg{display:flex;background:#fff;border-radius:999px;padding:4px}
+.seg button{flex:1;border:0;background:none;border-radius:999px;padding:9px;font:inherit;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--red);color:#fff}
+.ok{display:none;background:#E9F6EE;border-radius:14px;padding:14px;font-size:.92rem}
+.close{align-self:flex-end;border:0;background:none;font-size:1.6rem;cursor:pointer;color:var(--red)}
+.tune-btn{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--card);color:var(--red);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.1)}
+.tune{position:fixed;right:16px;bottom:66px;z-index:60;width:min(280px,calc(100vw - 32px));background:#fff;border-radius:20px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,.16);display:none;font-size:.9rem}
+.tune.open{display:block}
+.tune h4{font-family:'IBM Plex Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#9a8076;margin:14px 0 8px;font-weight:500}
+.tune h4:first-child{margin-top:0}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #ddd;cursor:pointer}
+.sw button[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+.sw.fonts button{width:auto;height:auto;border-radius:10px;border:1px solid #ddd;box-shadow:none;background:#fff;padding:6px 10px;font-size:1rem}
+.sw.fonts button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tune input[type=range]{width:100%;accent-color:var(--red)}
+@media (max-width:900px){
+  .top nav .pill.hide-s{display:none}
+  .menu{grid-template-columns:1fr 1fr}
+  .item:first-child{grid-row:auto;grid-column:1/-1}
+  .combo .wrap,.place{grid-template-columns:1fr}
+  .revs{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .top nav .status{display:none}
+  .band{height:52vh}
+  .sticker{width:54px;height:54px}
+  .menu{grid-template-columns:1fr}
+  .head{flex-direction:column;align-items:start}
+  section{padding:68px 0}
+  .tape{bottom:8%}
+}
+</style>
+</head>
+<body class="stripes">
+<header class="top stripes"><div class="wrap">
+  <a class="logo" href="#">Смэш</a>
+  <nav>
+    <span class="pill mono status" id="status"><i></i><span>открыто</span></span>
+    <a class="pill mono hide-s" href="#menu">меню</a>
+    <a class="pill mono hide-s" href="#place">где мы</a>
+    <a class="pill mono" href="#menu" style="background:var(--red);color:#fff">доставка</a>
+  </nav>
+</div></header>
+
+<main>
+<section class="hero" style="padding-bottom:0">
+  <h1>смэш-бургеры</h1>
+  <div class="band">
+    <img src="img/hero.jpg" alt="Девушка ест двойной смэш-бургер">
+    <svg class="sticker" style="left:8%;top:10%" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36" fill="#fff"/><circle cx="40" cy="40" r="27" fill="none" stroke="#B3121B" stroke-width="4"/><circle cx="31" cy="35" r="3.5" fill="#B3121B"/><circle cx="49" cy="35" r="3.5" fill="#B3121B"/><path d="M28 46q12 12 24 0" fill="none" stroke="#B3121B" stroke-width="4" stroke-linecap="round"/></svg>
+    <svg class="sticker s2" style="left:4%;top:52%" viewBox="0 0 80 80" aria-hidden="true"><ellipse cx="40" cy="40" rx="37" ry="30" fill="#fff"/><path d="M18 38q22-26 44 0z" fill="#B3121B"/><rect x="16" y="42" width="48" height="6" rx="3" fill="#B3121B"/><path d="M18 52h44q-4 9-22 9t-22-9z" fill="#B3121B"/></svg>
+    <svg class="sticker s3" style="right:7%;top:9%" viewBox="0 0 80 80" aria-hidden="true"><rect x="10" y="6" width="60" height="68" rx="14" fill="#fff"/><path d="M26 22h28l-4 40H30z" fill="#B3121B"/><path d="M44 10l-4 14" stroke="#B3121B" stroke-width="4" stroke-linecap="round"/><circle cx="54" cy="22" r="8" fill="#fff" stroke="#B3121B" stroke-width="3"/></svg>
+    <svg class="sticker s4" style="right:5%;bottom:10%" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="#fff"/><path d="M24 58q2-24 24-36q6-2 8 2q-2 26-28 38q-5 1-4-4z" fill="#B3121B"/><path d="M50 22q2-8 8-10" stroke="#2F7D32" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
+    <span class="tape mono">ул. Малышева, 51</span>
+  </div>
+  <div class="till">до 2 ночи.</div>
+  <div class="acts"><a class="btn" href="#menu">заказать доставку</a><a class="mono tel" href="#place">+7 900 000-00-00</a></div>
+</section>
+
+<section id="menu"><div class="wrap">
+  <div class="head"><h2>меню</h2><p class="mono">Пять самых популярных. Мясо жарим при вас, булочки печём утром.</p></div>
+  <div class="menu" id="menuGrid"></div>
+</div></section>
+
+<section class="combo"><div class="wrap">
+  <div>
+    <span class="mono">комбо дня</span>
+    <h2 style="margin-top:14px">двойной + картошка + шейк</h2>
+    <p>Самый популярный набор — на 160 ₽ дешевле, чем по отдельности. Каждый день до закрытия.</p>
+    <button class="btn" type="button" id="addCombo">в корзину за 840 ₽</button>
+  </div>
+  <img src="img/m1.jpg" alt="Двойной смэш-бургер" loading="lazy">
+</div></section>
+
+<section id="place"><div class="wrap">
+  <div class="head"><h2>где мы</h2></div>
+  <div class="place">
+    <img src="img/room.jpg" alt="Зал бургерной: красные диваны и открытый гриль" loading="lazy">
+    <div class="info">
+      <span class="pill mono status" style="align-self:flex-start"><i></i><span>открыто</span></span>
+      <dl>
+        <dt>Адрес</dt><dd>Екатеринбург, ул. Малышева, 51</dd>
+        <dt>Часы</dt><dd>каждый день 11:00–02:00</dd>
+        <dt>Доставка</dt><dd>от 40 минут, бесплатно от 1 200 ₽</dd>
+        <dt>Телефон</dt><dd>+7 900 000-00-00</dd>
+      </dl>
+      <div class="rev"><p>«Лучший двойной в городе. Корочка как надо».</p><small>Игорь · отзыв для демо</small></div>
+    </div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap revs">
+  <div class="rev"><p>«Заказали в час ночи — привезли горячим за 35 минут».</p><small>Настя · отзыв для демо</small></div>
+  <div class="rev"><p>«Шейк густой, а картошка с сырным соусом — отдельная любовь».</p><small>Тимур · отзыв для демо</small></div>
+  <div class="rev"><p>«Уютно, громкая музыка, быстро отдают. Ходим компанией по пятницам».</p><small>Лера · отзыв для демо</small></div>
+</div></section>
+</main>
+
+<footer class="site"><div class="wrap"><span class="mono">Смэш · Екатеринбург · демо-сайт</span><span class="mono">11:00–02:00 · +7 900 000-00-00</span></div></footer>
+
+<div class="cartbar" id="cartbar"><span id="cartInfo"></span><button class="btn" type="button" id="openCart">оформить</button></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Корзина">
+  <div class="panel">
+    <button class="close" type="button" id="closeCart" aria-label="Закрыть">×</button>
+    <h3>ваш заказ</h3>
+    <div id="lines"></div>
+    <div class="line"><b>итого</b><b id="total"></b></div>
+    <div class="seg" id="mode"><button type="button" aria-pressed="true" data-m="Доставка">доставка</button><button type="button" aria-pressed="false" data-m="Самовывоз">самовывоз</button></div>
+    <form id="form" style="display:grid;gap:10px">
+      <input name="phone" type="tel" placeholder="+7 900 000-00-00" required>
+      <input name="addr" id="addr" placeholder="Адрес доставки" required>
+      <button class="btn" type="submit">отправить заказ</button>
+      <div class="ok" id="ok">Заказ принят! Это демо — в рабочей версии он сразу придёт на кухню и в Telegram администратору.</div>
+    </form>
+  </div>
+</div>
+
+<div class="demo-badge">Демо-концепт</div>
+<button class="tune-btn" id="tuneBtn" aria-expanded="false">Настроить вид</button>
+<div class="tune" id="tune">
+  <h4>Цвет</h4><div class="sw" data-k="red"></div>
+  <h4>Шрифт заголовков</h4><div class="sw fonts" data-k="display"></div>
+  <h4>Яркость фото</h4><input type="range" min="0.75" max="1.15" step="0.05" data-k="photo" aria-label="Яркость фото">
+  <h4>Размер текста</h4><input type="range" min="0.9" max="1.15" step="0.05" data-k="fs" aria-label="Размер текста">
+</div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const rub = n => n.toLocaleString("ru-RU") + " ₽";
+const MENU = [
+  {id: "double", name: "Двойной смэш", text: "Две котлеты с хрустящей корочкой, чеддер, огурцы, лук, фирменный соус.", price: 490, kcal: 780, img: "img/m1.jpg"},
+  {id: "classic", name: "Классика", text: "Одна котлета, салат, томат, соус.", price: 390, kcal: 560, img: "img/m5.jpg"},
+  {id: "chicken", name: "Острый цыплёнок", text: "Хрустящее филе, капустный салат, острый соус.", price: 450, kcal: 690, img: "img/m2.jpg"},
+  {id: "fries", name: "Картошка рифлёная", text: "С сырным соусом.", price: 220, kcal: 410, img: "img/m3.jpg"},
+  {id: "shake", name: "Клубничный шейк", text: "Густой, на пломбире.", price: 290, kcal: 520, img: "img/m4.jpg"}
+];
+$("#menuGrid").innerHTML = MENU.map(m => `<article class="item"><img src="${m.img}" alt="${m.name}" loading="lazy"><div><h3>${m.name}</h3><p>${m.text}</p><span class="price">${rub(m.price)}</span><span class="kcal mono">${m.kcal} ккал</span><button class="add" type="button" data-id="${m.id}" aria-label="Добавить: ${m.name}">+</button></div></article>`).join("");
+const cart = {};
+const byId = id => MENU.find(m => m.id === id) || {id: "combo", name: "Комбо дня", price: 840};
+function renderCart(){
+  const ids = Object.keys(cart).filter(k => cart[k] > 0);
+  const count = ids.reduce((s, k) => s + cart[k], 0), sum = ids.reduce((s, k) => s + cart[k] * byId(k).price, 0);
+  $("#cartbar").classList.toggle("show", count > 0);
+  $("#cartInfo").textContent = `${count} шт · ${rub(sum)}`;
+  $("#lines").innerHTML = ids.map(k => `<div class="line"><span>${byId(k).name}</span><span class="qty"><button type="button" data-d="-1" data-id="${k}" aria-label="Меньше">−</button>${cart[k]}<button type="button" data-d="1" data-id="${k}" aria-label="Больше">+</button></span><b>${rub(cart[k] * byId(k).price)}</b></div>`).join("") || "<p>Корзина пуста</p>";
+  $("#total").textContent = rub(sum);
+}
+$("#menuGrid").addEventListener("click", e => { const b = e.target.closest(".add"); if (!b) return; cart[b.dataset.id] = (cart[b.dataset.id] || 0) + 1; b.classList.add("done"); b.textContent = "✓"; setTimeout(() => { b.classList.remove("done"); b.textContent = "+"; }, 900); renderCart(); });
+$("#addCombo").addEventListener("click", () => { cart.combo = (cart.combo || 0) + 1; renderCart(); });
+$("#lines").addEventListener("click", e => { const b = e.target.closest("button[data-d]"); if (!b) return; cart[b.dataset.id] = Math.max(0, cart[b.dataset.id] + +b.dataset.d); renderCart(); });
+$("#openCart").addEventListener("click", () => $("#drawer").classList.add("open"));
+$("#closeCart").addEventListener("click", () => $("#drawer").classList.remove("open"));
+$("#drawer").addEventListener("click", e => { if (e.target.id === "drawer") $("#drawer").classList.remove("open"); });
+$("#mode").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; $$("#mode button").forEach(x => x.setAttribute("aria-pressed", x === b)); const pick = b.dataset.m === "Самовывоз"; $("#addr").required = !pick; $("#addr").style.display = pick ? "none" : ""; });
+$("#form").addEventListener("submit", e => { e.preventDefault(); $("#ok").style.display = "block"; e.target.querySelector("button").disabled = true; });
+renderCart();
+function status(){ const h = new Date().getHours(), open = h >= 11 || h < 2; $$(".status").forEach(s => { s.classList.toggle("closed", !open); s.querySelector("span").textContent = open ? "открыто до 02:00" : "откроемся в 11:00"; }); }
+status(); setInterval(status, 60000);
+const T = {red: ["#B3121B", "#1E6B3A", "#1D4ED8", "#2A1A16"], display: [["Lora", "'Lora',serif"], ["PT Serif", "'PT Serif',serif"], ["Playfair", "'Playfair Display',serif"]]};
+let saved = {}; try { saved = JSON.parse(localStorage.getItem("tune-burger") || "{}"); } catch (e) {}
+const rs = document.documentElement.style;
+function apply(){
+  const red = saved.red || T.red[0];
+  rs.setProperty("--red", red); rs.setProperty("--line", red + "22"); rs.setProperty("--display", saved.display || T.display[0][1]);
+  rs.setProperty("--photo", saved.photo || 1); rs.setProperty("--fs", saved.fs || 1);
+  $("[data-k=red]").innerHTML = T.red.map(c => `<button type="button" style="background:${c}" aria-label="Цвет ${c}" aria-pressed="${red === c}" data-v="${c}"></button>`).join("");
+  $("[data-k=display]").innerHTML = T.display.map(f => `<button type="button" style="font-family:${f[1]}" aria-pressed="${(saved.display || T.display[0][1]) === f[1]}" data-v="${f[1]}">${f[0]}</button>`).join("");
+  $("[data-k=photo]").value = saved.photo || 1; $("[data-k=fs]").value = saved.fs || 1;
+  try { localStorage.setItem("tune-burger", JSON.stringify(saved)); } catch (e) {}
+}
+$("#tune").addEventListener("click", e => { const b = e.target.closest("button[data-v]"); if (!b) return; saved[b.parentElement.dataset.k] = b.dataset.v; apply(); });
+$$("#tune input").forEach(i => i.addEventListener("input", () => { saved[i.dataset.k] = i.value; apply(); }));
+$("#tuneBtn").addEventListener("click", () => { const o = $("#tune").classList.toggle("open"); $("#tuneBtn").setAttribute("aria-expanded", o); });
+apply();
+</script>
+</body>
+</html>

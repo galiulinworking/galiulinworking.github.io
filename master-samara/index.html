@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мастер на час в Самаре — сантехник и электрик за 40 минут</title>
+<meta name="description" content="Сантехника, электрика и мелкий ремонт в Самаре. Цена до начала работ, гарантия год.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Rubik:wght@500;600;700&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#F2652F;--accent-ink:#fff;--ink:#16181D;--soft:#5B6270;--bg:#F6F4F1;--card:#fff;--line:#E6E2DC;--display:'Onest',sans-serif;--photo:1;--fs:1}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font:400 calc(17px*var(--fs))/1.55 'Onest',sans-serif;color:var(--ink);background:var(--bg)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:1.08}
+h2{font-size:clamp(1.9rem,3.6vw,3rem)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:999px;border:0;cursor:pointer;font:inherit;font-weight:600;transition:transform .15s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn-accent{background:var(--accent);color:var(--accent-ink)}
+.btn-light{background:#fff;color:var(--ink)}
+.demo-badge{position:fixed;left:16px;bottom:16px;z-index:60;background:rgba(22,24,29,.86);color:#fff;font-size:12px;padding:7px 12px;border-radius:999px}
+.top{position:fixed;inset:0 0 auto;z-index:50;transition:background .3s,box-shadow .3s}
+.top .wrap{display:flex;align-items:center;gap:24px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;color:#fff}
+.logo i{width:30px;height:30px;border-radius:9px;background:var(--accent);display:grid;place-items:center;font-style:normal;color:#fff;font-size:15px}
+.nav{display:flex;gap:26px;margin-left:auto;color:rgba(255,255,255,.88);font-size:.95rem}
+.top .btn{padding:11px 20px}
+.top.solid{background:rgba(255,255,255,.96);box-shadow:0 1px 0 var(--line)}
+.top.solid .logo,.top.solid .nav{color:var(--ink)}
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;color:#fff;overflow:hidden;padding:0}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%;filter:brightness(var(--photo))}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,16,20,.82) 0%,rgba(14,16,20,.55) 42%,rgba(14,16,20,0) 70%)}
+.hero .wrap{position:relative;z-index:2;padding:110px 0 70px}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:7px 14px;font-size:.88rem;backdrop-filter:blur(6px)}
+.pill b{width:8px;height:8px;border-radius:50%;background:#3DDC84;box-shadow:0 0 0 4px rgba(61,220,132,.25)}
+.hero h1{font-size:clamp(2.6rem,5.2vw,4.6rem);max-width:13ch;margin:22px 0 18px}
+.hero p.lead{max-width:44ch;color:rgba(255,255,255,.86);font-size:1.08rem}
+.hero .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.rating{display:flex;align-items:center;gap:14px;margin-top:44px;font-size:.92rem;color:rgba(255,255,255,.85)}
+.rating .faces{display:flex}.rating .faces span{width:34px;height:34px;border-radius:50%;border:2px solid #fff;margin-left:-8px;background:#D9D2C8 center/cover}
+.rating .faces span:first-child{margin-left:0}
+.stars{color:#FFC94A;letter-spacing:2px}
+.facts{background:var(--ink);color:#fff}
+.facts .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:34px 0}
+.facts b{display:block;font-family:var(--display);font-size:1.9rem;color:var(--accent)}
+.facts span{color:rgba(255,255,255,.75);font-size:.95rem}
+section{padding:96px 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:40px}
+.head p{max-width:38ch;color:var(--soft)}
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.svc{background:var(--card);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.svc img{aspect-ratio:4/3;object-fit:cover;filter:brightness(var(--photo))}
+.svc div{padding:20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.svc h3{font-size:1.2rem}
+.svc ul{list-style:none;color:var(--soft);font-size:.93rem}
+.svc ul li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line)}
+.svc ul li b{color:var(--ink);font-weight:600;white-space:nowrap}
+.quote{background:var(--card);border-radius:30px;display:grid;grid-template-columns:1.1fr 1fr;overflow:hidden}
+.quote .q{padding:44px}
+.quote .q h2{margin-bottom:10px}
+.quote .q>p{color:var(--soft);margin-bottom:26px}
+.qrow{margin-bottom:20px}
+.qrow label{display:block;font-weight:600;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:9px 16px;font:inherit;font-size:.95rem;cursor:pointer;color:var(--ink)}
+.chips button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.quote .res{background:var(--accent);color:var(--accent-ink);padding:44px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.res small{opacity:.85}
+.res .sum{font-family:var(--display);font-size:clamp(2.2rem,4.2vw,3.4rem);font-weight:700;line-height:1.05;margin:6px 0}
+.res ul{list-style:none;display:grid;gap:8px;font-size:.98rem}
+.res ul li::before{content:"✓  "}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+.step{border-top:2px solid var(--ink);padding-top:18px}
+.step::before{counter-increment:s;content:"0" counter(s);font-family:var(--display);font-weight:700;color:var(--accent);font-size:1.1rem}
+.step h3{font-size:1.15rem;margin:10px 0 6px}
+.step p{color:var(--soft);font-size:.95rem}
+.team{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.team img{border-radius:28px;aspect-ratio:4/3;object-fit:cover;filter:brightness(var(--photo))}
+.team ul{list-style:none;display:grid;gap:14px;margin-top:22px}
+.team li{display:flex;gap:14px;align-items:flex-start}
+.team li i{flex:none;width:36px;height:36px;border-radius:12px;background:rgba(242,101,47,.12);color:var(--accent);display:grid;place-items:center;font-style:normal;font-weight:700}
+.areas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.areas span{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:.92rem}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rev{background:var(--card);border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:14px}
+.rev p{flex:1}
+.rev footer{color:var(--soft);font-size:.9rem}
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{background:var(--card);border-radius:18px;padding:20px 24px}
+.faq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--accent);font-size:1.4rem;line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq p{color:var(--soft);margin-top:10px}
+.final{background:var(--ink);color:#fff;border-radius:32px;padding:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.final p{color:rgba(255,255,255,.75);margin-top:12px}
+form{display:grid;gap:12px}
+input,textarea{width:100%;font:inherit;padding:15px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.5)}
+.ok{display:none;background:rgba(61,220,132,.15);border:1px solid #3DDC84;border-radius:14px;padding:16px}
+footer.site{padding:36px 0 90px;color:var(--soft);font-size:.9rem}
+footer.site .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.tune-btn{position:fixed;right:16px;bottom:16px;z-index:60;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font:inherit;font-size:.9rem;font-weight:600;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.tune{position:fixed;right:16px;bottom:66px;z-index:60;width:min(280px,calc(100vw - 32px));background:#fff;color:var(--ink);border-radius:20px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,.18);display:none;font-size:.9rem}
+.tune.open{display:block}
+.tune h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--soft);margin:14px 0 8px}
+.tune h4:first-child{margin-top:0}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);cursor:pointer}
+.sw button[aria-pressed=true]{box-shadow:0 0 0 2px var(--ink)}
+.sw.fonts button{width:auto;height:auto;border-radius:10px;border:1px solid var(--line);box-shadow:none;background:#fff;color:var(--ink);padding:6px 10px;font-size:.92rem}
+.sw.fonts button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tune input[type=range]{width:100%;padding:0;border:0;background:none;accent-color:var(--accent)}
+@media (max-width:980px){
+  .services{grid-template-columns:repeat(2,1fr)}
+  .facts .wrap,.steps{grid-template-columns:repeat(2,1fr)}
+  .quote,.team,.final{grid-template-columns:1fr}
+  .reviews{grid-template-columns:1fr}
+  .nav{display:none}
+}
+@media (max-width:640px){
+  .top .btn{display:none}
+  .hero{align-items:flex-end}
+  .hero>img{object-position:74% 50%}
+  .hero::after{background:linear-gradient(to top,rgba(14,16,20,.94) 0%,rgba(14,16,20,.65) 50%,rgba(14,16,20,.08) 100%)}
+  .hero .wrap{padding:0 0 70px}
+  .services{grid-template-columns:1fr}
+  .head{flex-direction:column;align-items:start}
+  section{padding:68px 0}
+  .quote .q,.quote .res,.final{padding:28px}
+  .final{border-radius:24px}
+  .facts b{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#"><i>М</i>Мастер Дом</a>
+    <nav class="nav"><a href="#services">Услуги</a><a href="#price">Цена</a><a href="#team">О нас</a><a href="#faq">Вопросы</a></nav>
+    <a class="btn btn-accent" href="#order">Вызвать мастера</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <img src="img/hero.jpg" alt="Мастер чинит трубы под кухонной мойкой">
+  <div class="wrap">
+    <span class="pill"><b></b>На связи 24/7 · сейчас свободны 3 мастера</span>
+    <h1>Сантехник и электрик приедут за 40 минут</h1>
+    <p class="lead">Течёт кран, выбило пробки или нужно повесить телевизор — называем цену до начала работ и даём гарантию год.</p>
+    <div class="acts"><a class="btn btn-accent" href="#price">Узнать цену за минуту</a><a class="btn btn-light" href="#order">Позвонить мастеру</a></div>
+    <div class="rating"><div class="faces"><span style="background-image:url(img/s1.jpg)"></span><span style="background-image:url(img/s2.jpg)"></span><span style="background-image:url(img/team.jpg)"></span></div><div><span class="stars">★★★★★</span><br>4,9 — 312 отзывов</div></div>
+  </div>
+</section>
+
+<div class="facts"><div class="wrap">
+  <div><b>40 мин</b><span>средний приезд по городу</span></div>
+  <div><b>от 500 ₽</b><span>цена до начала работ</span></div>
+  <div><b>1 год</b><span>гарантия на работу</span></div>
+  <div><b>0 ₽</b><span>выезд при заказе работ</span></div>
+</div></div>
+
+<section id="services"><div class="wrap">
+  <div class="head"><h2>Что делаем чаще всего</h2><p>Материалы и запчасти привозим с собой — не нужно бежать в магазин.</p></div>
+  <div class="services">
+    <article class="svc"><img src="img/s1.jpg" alt="Замена смесителя" loading="lazy"><div><h3>Сантехника</h3><ul><li>Замена смесителя<b>от 900 ₽</b></li><li>Устранение протечки<b>от 700 ₽</b></li><li>Установка унитаза<b>от 2 500 ₽</b></li></ul></div></article>
+    <article class="svc"><img src="img/s2.jpg" alt="Установка розетки" loading="lazy"><div><h3>Электрика</h3><ul><li>Розетка, выключатель<b>от 500 ₽</b></li><li>Люстра, светильник<b>от 900 ₽</b></li><li>Поиск неисправности<b>от 1 200 ₽</b></li></ul></div></article>
+    <article class="svc"><img src="img/s3.jpg" alt="Подключение стиральной машины" loading="lazy"><div><h3>Техника</h3><ul><li>Стиральная машина<b>от 1 500 ₽</b></li><li>Посудомойка<b>от 1 800 ₽</b></li><li>Варочная панель<b>от 1 500 ₽</b></li></ul></div></article>
+    <article class="svc"><img src="img/s4.jpg" alt="Монтаж кронштейна телевизора" loading="lazy"><div><h3>Мелкий ремонт</h3><ul><li>Повесить телевизор<b>от 1 200 ₽</b></li><li>Карниз, полки<b>от 600 ₽</b></li><li>Сборка мебели<b>от 1 000 ₽</b></li></ul></div></article>
+  </div>
+</div></section>
+
+<section id="price" style="padding-top:0"><div class="wrap">
+  <div class="quote">
+    <div class="q">
+      <h2>Цена за минуту</h2>
+      <p>Три вопроса — и вы видите вилку цены. Точную сумму мастер назовёт на месте, до начала работ.</p>
+      <div class="qrow"><label>Что случилось?</label><div class="chips" data-q="task"></div></div>
+      <div class="qrow"><label>Когда нужен мастер?</label><div class="chips" data-q="when"></div></div>
+      <div class="qrow"><label>Где вы?</label><div class="chips" data-q="area"></div></div>
+    </div>
+    <div class="res">
+      <div><small>Примерная стоимость</small><div class="sum" id="sum"></div><small id="sumNote"></small></div>
+      <ul><li>Цена фиксируется до начала работ</li><li>Запчасти — по чеку магазина</li><li>Гарантия 1 год в договоре</li></ul>
+      <a class="btn btn-light" href="#order" id="toOrder">Вызвать с этой ценой</a>
+    </div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="head"><h2>Как проходит вызов</h2></div>
+  <div class="steps">
+    <div class="step"><h3>Заявка</h3><p>Пишете или звоните. Перезваниваем за 5 минут и уточняем задачу.</p></div>
+    <div class="step"><h3>Приезд</h3><p>Мастер приезжает за 40–60 минут, в бахилах и со своим инструментом.</p></div>
+    <div class="step"><h3>Цена</h3><p>Осматривает и называет точную сумму. Не устроила — платите только выезд 300 ₽.</p></div>
+    <div class="step"><h3>Гарантия</h3><p>После работы — акт и гарантия на год. Убираем за собой.</p></div>
+  </div>
+</div></section>
+
+<section id="team" style="background:#fff"><div class="wrap team">
+  <img src="img/team.jpg" alt="Мастера у служебного фургона" loading="lazy">
+  <div>
+    <h2>Свои мастера, а не случайные люди</h2>
+    <ul>
+      <li><i>✓</i><div><b>Опыт от 5 лет</b><br><span style="color:var(--soft)">Каждый мастер проходит проверку и испытательный срок.</span></div></li>
+      <li><i>✓</i><div><b>Машина с запчастями</b><br><span style="color:var(--soft)">Большинство задач решаем за один приезд.</span></div></li>
+      <li><i>✓</i><div><b>Оплата после работы</b><br><span style="color:var(--soft)">Наличными, картой или переводом.</span></div></li>
+    </ul>
+    <div class="areas"><span>Октябрьский</span><span>Ленинский</span><span>Промышленный</span><span>Кировский</span><span>Советский</span><span>Красноглинский</span><span>Новокуйбышевск</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head"><h2>Отзывы</h2><p>Примеры отзывов для демо.</p></div>
+  <div class="reviews">
+    <article class="rev"><span class="stars">★★★★★</span><p>Ночью потёк шланг под мойкой. Мастер приехал через 35 минут, всё заменил и показал старый шланг — трещина.</p><footer>Ольга, Октябрьский район</footer></article>
+    <article class="rev"><span class="stars">★★★★★</span><p>Повесили телевизор и спрятали провода в короб. Цену назвали по телефону — такая и вышла.</p><footer>Денис, Промышленный район</footer></article>
+    <article class="rev"><span class="stars">★★★★★</span><p>Выбивало автомат на кухне. Нашли плохой контакт в розетке, заменили за полчаса.</p><footer>Мария, Кировский район</footer></article>
+  </div>
+</div></section>
+
+<section id="faq" style="padding-top:0"><div class="wrap">
+  <div class="head"><h2>Частые вопросы</h2></div>
+  <div class="faq">
+    <details><summary>Сколько стоит выезд?</summary><p>Бесплатно, если заказываете работу. Если от работы отказались — 300 ₽.</p></details>
+    <details><summary>Приедете ночью и в выходные?</summary><p>Да, дежурные мастера работают круглосуточно, без доплаты за выходные.</p></details>
+    <details><summary>Кто покупает запчасти?</summary><p>Самые ходовые есть в машине. Остальное мастер купит по пути и приложит чек.</p></details>
+    <details><summary>Что входит в гарантию?</summary><p>Если в течение года работа даст сбой — приедем и исправим бесплатно.</p></details>
+  </div>
+</div></section>
+
+<section id="order" style="padding-top:0"><div class="wrap">
+  <div class="final">
+    <div><h2>Опишите задачу — перезвоним за 5 минут</h2><p>Мастер уточнит детали и назовёт время приезда.</p></div>
+    <form id="form">
+      <input name="name" placeholder="Как к вам обращаться" required>
+      <input name="phone" type="tel" placeholder="+7 900 000-00-00" required>
+      <textarea name="task" rows="3" placeholder="Что случилось"></textarea>
+      <button class="btn btn-accent" type="submit">Вызвать мастера</button>
+      <div class="ok" id="ok">Заявка принята. Это демо — в рабочей версии она сразу придёт мастеру в Telegram.</div>
+    </form>
+  </div>
+</div></section>
+</main>
+
+<footer class="site"><div class="wrap"><span>Мастер Дом · Самара · демо-сайт</span><span>+7 900 000-00-00 · круглосуточно</span></div></footer>
+
+<div class="demo-badge">Демо-концепт</div>
+<button class="tune-btn" id="tuneBtn" aria-expanded="false">Настроить вид</button>
+<div class="tune" id="tune">
+  <h4>Акцент</h4><div class="sw" data-k="accent"></div>
+  <h4>Шрифт заголовков</h4><div class="sw fonts" data-k="display"></div>
+  <h4>Яркость фото</h4><input type="range" min="0.7" max="1.15" step="0.05" data-k="photo" aria-label="Яркость фото">
+  <h4>Размер текста</h4><input type="range" min="0.9" max="1.15" step="0.05" data-k="fs" aria-label="Размер текста">
+</div>
+
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const topBar = $("#top"); const onTop = () => topBar.classList.toggle("solid", scrollY > innerHeight * .7); addEventListener("scroll", onTop, {passive:true}); onTop();
+const Q = {
+  task: [["Протечка", 700, 1800], ["Смеситель", 900, 1600], ["Розетка", 500, 1200], ["Свет", 900, 2500], ["Техника", 1500, 3000], ["Телевизор", 1200, 2200]],
+  when: [["Сейчас", 1.3], ["Сегодня", 1.15], ["Завтра", 1], ["На неделе", .95]],
+  area: [["Самара", 0], ["Пригород", 400]]
+};
+const st = {task: 0, when: 2, area: 0};
+const rub = n => (Math.round(n / 50) * 50).toLocaleString("ru-RU") + " ₽";
+function render(){
+  for (const k in Q) $(`[data-q=${k}]`).innerHTML = Q[k].map((o, i) => `<button type="button" aria-pressed="${st[k] === i}" data-i="${i}">${o[0]}</button>`).join("");
+  const t = Q.task[st.task], w = Q.when[st.when][1], a = Q.area[st.area][1];
+  $("#sum").textContent = `${rub(t[1] * w + a)} – ${rub(t[2] * w + a)}`;
+  $("#sumNote").textContent = `${t[0]}, ${Q.when[st.when][0].toLowerCase()}${a ? ", выезд за город +" + a + " ₽" : ""}`;
+}
+$$(".chips").forEach(c => c.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; st[c.dataset.q] = +b.dataset.i; render(); }));
+render();
+$("#toOrder").addEventListener("click", () => { $("#form").task.value = `${Q.task[st.task][0]}, ${Q.when[st.when][0].toLowerCase()}. Оценка: ${$("#sum").textContent}`; });
+$("#form").addEventListener("submit", e => { e.preventDefault(); $("#ok").style.display = "block"; e.target.querySelector("button").disabled = true; });
+const T = {accent: ["#F2652F", "#2563EB", "#16A34A", "#111827"], display: [["Onest", "'Onest',sans-serif"], ["Rubik", "'Rubik',sans-serif"], ["PT Serif", "'PT Serif',serif"]]};
+let saved = {}; try { saved = JSON.parse(localStorage.getItem("tune-master") || "{}"); } catch (e) {}
+const rs = document.documentElement.style;
+function apply(){
+  rs.setProperty("--accent", saved.accent || T.accent[0]); rs.setProperty("--display", saved.display || T.display[0][1]);
+  rs.setProperty("--photo", saved.photo || 1); rs.setProperty("--fs", saved.fs || 1);
+  $("[data-k=accent]").innerHTML = T.accent.map(c => `<button type="button" style="background:${c}" aria-label="Цвет ${c}" aria-pressed="${(saved.accent || T.accent[0]) === c}" data-v="${c}"></button>`).join("");
+  $("[data-k=display]").innerHTML = T.display.map(f => `<button type="button" style="font-family:${f[1]}" aria-pressed="${(saved.display || T.display[0][1]) === f[1]}" data-v="${f[1]}">${f[0]}</button>`).join("");
+  $("[data-k=photo]").value = saved.photo || 1; $("[data-k=fs]").value = saved.fs || 1;
+  try { localStorage.setItem("tune-master", JSON.stringify(saved)); } catch (e) {}
+}
+$("#tune").addEventListener("click", e => { const b = e.target.closest("button[data-v]"); if (!b) return; saved[b.parentElement.dataset.k] = b.dataset.v; apply(); });
+$$("#tune input").forEach(i => i.addEventListener("input", () => { saved[i.dataset.k] = i.value; apply(); }));
+$("#tuneBtn").addEventListener("click", () => { const o = $("#tune").classList.toggle("open"); $("#tuneBtn").setAttribute("aria-expanded", o); });
+apply();
+</script>
+</body>
+</html>
