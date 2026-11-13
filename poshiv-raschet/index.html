@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Расчёт партии под ключ</title>
+<meta name="description" content="Цена пошива за изделие и за партию: ткань, фурнитура, работа, налог и брак — за минуту.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f1ea; --paper-2:#ece6db; --ink:#1b1815; --ink-2:#5b544c; --line:#d9d0c3;
+  --satin:#141210; --satin-2:#26221e; --brass:#b48a4f; --brass-soft:#e9dcc6;
+  --c-fabric:#6a6058; --c-acc:#a39482; --c-work:#b48a4f; --c-margin:#6f8a7a; --c-tax:#c26a4a;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.5 "Golos Text",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+
+.hero{position:relative;min-height:min(72vh,780px);display:flex;align-items:flex-end;color:#f7f2ea;overflow:hidden;background:#15120f}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;transform:scale(1.05);animation:drift 18s ease-out forwards}
+@keyframes drift{to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,13,11,.1) 0%,rgba(15,13,11,.35) 45%,rgba(15,13,11,.9) 100%)}
+.hero-in{position:relative;z-index:1;width:100%;max-width:1180px;margin:0 auto;padding:0 32px 56px}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-soft)}
+.hero h1{font:400 clamp(40px,6.4vw,84px)/1.02 "Prata",serif;margin:14px 0 18px;max-width:11ch}
+.hero p{font-size:clamp(16px,1.6vw,19px);max-width:34ch;margin:0 0 28px;color:#e8e0d4}
+.btn{display:inline-flex;align-items:center;gap:10px;border:0;cursor:pointer;font:600 15px/1 "Golos Text",sans-serif;border-radius:999px;padding:15px 24px;text-decoration:none;transition:transform .15s,background .15s}
+.btn:active{transform:scale(.98)}
+.btn-light{background:#f5efe5;color:var(--ink)}
+.btn-light:hover{background:#fff}
+@media (prefers-reduced-motion:reduce){.hero img{animation:none;transform:none}html{scroll-behavior:auto}}
+
+.wrap{max-width:1180px;margin:0 auto;padding:56px 32px 96px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:40px;align-items:start}
+.form{display:flex;flex-direction:column;gap:18px;min-width:0}
+.card{background:#fbf8f3;border:1px solid var(--line);border-radius:var(--r);padding:24px 24px 20px}
+.card h2{font:400 24px/1.2 "Prata",serif;margin:0 0 4px}
+.card .hint{color:var(--ink-2);font-size:14px;margin:0 0 18px}
+.step{display:inline-block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);margin-bottom:6px;font-weight:600}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink-2);font-weight:500;min-width:0}
+.in{position:relative;display:flex;align-items:center}
+.in input,.in select,input.t{width:100%;min-width:0;font:500 16px/1.2 "Golos Text",sans-serif;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none;transition:border-color .15s,box-shadow .15s;font-variant-numeric:tabular-nums}
+.in select{appearance:none;cursor:pointer}
+.in input:focus,input.t:focus,.in select:focus{border-color:var(--brass);box-shadow:0 0 0 3px rgba(180,138,79,.18)}
+.in .u{position:absolute;right:12px;color:var(--ink-2);font-size:14px;pointer-events:none}
+.in input.has-u{padding-right:42px}
+
+.seg{display:inline-flex;background:var(--paper-2);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;font:600 13px/1 "Golos Text",sans-serif;padding:9px 14px;border-radius:999px;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-pressed=true]{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) 130px 38px;gap:8px;align-items:center}
+.row.size{grid-template-columns:110px minmax(0,1fr) 38px}
+.x{width:38px;height:44px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:var(--ink-2);font-size:20px;line-height:1}
+.x:hover{background:var(--paper-2);color:var(--ink)}
+.add{margin-top:10px;border:1px dashed var(--line);background:transparent;border-radius:10px;padding:11px 14px;font:500 14px/1 "Golos Text",sans-serif;color:var(--ink-2);cursor:pointer;width:100%}
+.add:hover{border-color:var(--brass);color:var(--ink)}
+.sum{display:flex;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.sum b{color:var(--ink);font-weight:600;text-align:right}
+
+.res{position:sticky;top:20px;background:radial-gradient(120% 80% at 85% 0%,#3a332c 0%,var(--satin-2) 38%,var(--satin) 100%);color:#efe8dd;border-radius:20px;padding:28px 26px 24px;box-shadow:0 30px 60px -30px rgba(20,18,16,.55);scroll-margin-top:16px}
+.res .lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#b9ad9c}
+.price{font:400 64px/1 "Prata",serif;margin:10px 0 6px;color:#fbf6ee}
+.price small{font:500 20px/1 "Golos Text",sans-serif;color:#cbbfae;margin-left:6px}
+.sub{font-size:14px;color:#cdb48c;min-height:21px}
+.bar{display:flex;height:10px;border-radius:999px;overflow:hidden;margin:22px 0 12px;background:#3a342e;gap:2px}
+.bar i{display:block;height:100%;transition:width .3s}
+.legend{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;color:#d8cebf}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend span::before{content:"";width:9px;height:9px;border-radius:3px;background:var(--dot);flex:none}
+.legend em{font-style:normal;color:#fbf6ee}
+.tot{margin:20px 0 0;border-top:1px solid rgba(255,255,255,.12);padding-top:16px;display:grid;grid-template-columns:1fr auto;gap:9px 12px;font-size:15px}
+.tot dt{color:#b9ad9c}
+.tot dd{margin:0;text-align:right;color:#fbf6ee;font-weight:500}
+.tot .big{font-size:20px;font-weight:600}
+.acts{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.btn-brass{background:var(--brass);color:#1b1612;justify-content:center}
+.btn-brass:hover{background:#c49a5d}
+.btn-ghost{background:transparent;color:#efe8dd;border:1px solid rgba(255,255,255,.22);justify-content:center}
+.btn-ghost:hover{background:rgba(255,255,255,.06)}
+.reset{background:none;border:0;color:#a89c8c;font:500 13px/1 "Golos Text",sans-serif;cursor:pointer;margin-top:14px;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-size:14px;transition:.25s;pointer-events:none;z-index:20;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.mbar{display:none}
+footer{max-width:1180px;margin:0 auto;padding:0 32px 48px;color:var(--ink-2);font-size:13px}
+
+@media (max-width:960px){
+  .wrap{grid-template-columns:1fr;padding:32px 16px 120px;gap:24px}
+  .res{position:static}
+  .hero{min-height:min(64vh,620px)}
+  .hero img{object-position:30% 60%}
+  .hero-in{padding:0 16px 36px}
+  .card{padding:20px 16px 16px}
+  .grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+  footer{padding:0 16px 110px}
+  .mbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:10;align-items:center;justify-content:space-between;gap:12px;background:var(--satin);color:#f3ece2;border-radius:16px;padding:12px 12px 12px 18px;box-shadow:0 14px 30px -10px rgba(0,0,0,.5);transition:transform .25s,opacity .25s}
+  .mbar.hide{transform:translateY(140%);opacity:0;pointer-events:none}
+  .mbar b{font:400 24px/1 "Prata",serif}
+  .mbar small{display:block;color:#b9ad9c;font-size:12.5px;margin-top:4px}
+  .mbar .btn{padding:12px 18px}
+}
+@media (max-width:420px){
+  .grid{grid-template-columns:1fr}
+  .row{grid-template-columns:minmax(0,1fr) 86px 30px;gap:6px}
+  .row input{font-size:15px;padding:12px 10px}
+  .row .in input.has-u{padding-right:26px}
+  .row .u{right:9px}
+  .row.size{grid-template-columns:84px minmax(0,1fr) 34px}
+  .row.size .in input.has-u{padding-right:40px}
+  .row.size .u{right:12px}
+  .x{width:30px}
+  .price{font-size:54px}
+  .res{padding:24px 18px 20px}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="hero.jpg" alt="Раскройный стол с рулоном чёрного сатина и лекалами" fetchpriority="high">
+  <div class="hero-in">
+    <div class="kicker">Швейное производство · Балашиха</div>
+    <h1>Расчёт партии под&nbsp;ключ</h1>
+    <p>Цена за изделие и за всю партию — с тканью, браком и налогом. Заказчику уходит одной кнопкой.</p>
+    <a class="btn btn-light" href="#calc">Посчитать партию ↓</a>
+  </div>
+</header>
+
+<main class="wrap" id="calc">
+  <div class="form">
+
+    <section class="card">
+      <div class="step">01 · Изделие</div>
+      <h2>Что шьём и сколько</h2>
+      <p class="hint">Разбивка по размерам — как в заказе.</p>
+      <div class="grid">
+        <label class="f">Изделие<input class="t" id="model" type="text"></label>
+        <label class="f">Ткань<input class="t" id="fabricName" type="text"></label>
+      </div>
+      <div class="rows" id="sizes" style="margin-top:16px"></div>
+      <button class="add" type="button" id="addSize">+ Добавить размер</button>
+      <div class="sum"><span>Всего изделий</span><b class="num" id="qtyOut">0 шт.</b></div>
+    </section>
+
+    <section class="card">
+      <div class="step">02 · Ткань</div>
+      <h2>Ткань на одно изделие</h2>
+      <p class="hint">Запас покрывает раскладку, недомоты и брак.</p>
+      <div style="margin-bottom:14px"><div class="seg" role="group" aria-label="Валюта цены ткани">
+        <button type="button" id="curRub" aria-pressed="false">Цена в ₽</button>
+        <button type="button" id="curUsd" aria-pressed="true">Цена в $</button>
+      </div></div>
+      <div class="grid four">
+        <label class="f">Цена за метр<span class="in"><input class="has-u" id="fPrice" inputmode="decimal"><span class="u" id="fCur">$</span></span></label>
+        <label class="f" id="rateWrap">Курс доллара<span class="in"><input class="has-u" id="rate" inputmode="decimal"><span class="u">₽</span></span></label>
+        <label class="f">Расход на изделие<span class="in"><input class="has-u" id="use" inputmode="decimal"><span class="u">м</span></span></label>
+        <label class="f">Запас<span class="in"><input class="has-u" id="waste" inputmode="decimal"><span class="u">%</span></span></label>
+      </div>
+      <div class="sum"><span>Ткань в изделии</span><b class="num" id="fabricOut">0 ₽</b></div>
+    </section>
+
+    <section class="card">
+      <div class="step">03 · Фурнитура и упаковка</div>
+      <h2>На одно изделие</h2>
+      <p class="hint">Резинка, лейблы, этикетки, пакет, доля короба и доставки.</p>
+      <div class="rows" id="acc"></div>
+      <button class="add" type="button" id="addAcc">+ Добавить строку</button>
+      <div class="sum"><span>Фурнитура и упаковка</span><b class="num" id="accOut">0 ₽</b></div>
+    </section>
+
+    <section class="card">
+      <div class="step">04 · Работа</div>
+      <h2>Пошив и проверка</h2>
+      <p class="hint">Стоимость операций на одно изделие.</p>
+      <div class="rows" id="work"></div>
+      <button class="add" type="button" id="addWork">+ Добавить операцию</button>
+      <div class="sum"><span>Работа</span><b class="num" id="workOut">0 ₽</b></div>
+    </section>
+
+    <section class="card">
+      <div class="step">05 · Разработка модели</div>
+      <h2>Разово на модель</h2>
+      <p class="hint">Лекала, градация, печать, примерки. Идёт отдельной строкой, в цену изделия не входит.</p>
+      <div class="rows" id="dev"></div>
+      <button class="add" type="button" id="addDev">+ Добавить строку</button>
+      <div class="sum"><span>Разработка</span><b class="num" id="devOut">0 ₽</b></div>
+    </section>
+
+    <section class="card">
+      <div class="step">06 · Налог и условия</div>
+      <h2>Налог, наценка, предоплата</h2>
+      <p class="hint">Налог закладывается в цену — чтобы не платить его из своей прибыли.</p>
+      <div class="grid">
+        <label class="f">Налог с выручки<span class="in"><input class="has-u" id="tax" inputmode="decimal"><span class="u">%</span></span></label>
+        <label class="f">Наценка производства<span class="in"><input class="has-u" id="margin" inputmode="decimal"><span class="u">%</span></span></label>
+        <label class="f">Предоплата<span class="in"><input class="has-u" id="prepay" inputmode="decimal"><span class="u">%</span></span></label>
+        <label class="f">Округлять цену до<span class="in"><select id="round"><option value="1">1 ₽</option><option value="10">10 ₽</option><option value="50">50 ₽</option></select><span class="u">▾</span></span></label>
+      </div>
+    </section>
+  </div>
+
+  <aside class="res" id="result" aria-live="polite">
+    <div class="lbl">Цена под ключ за изделие</div>
+    <div class="price num"><span id="pOne">0</span><small>₽</small></div>
+    <div class="sub" id="taxNote"></div>
+    <div class="bar" id="bar"></div>
+    <div class="legend" id="legend"></div>
+    <dl class="tot">
+      <dt>Партия, <span id="qtyR">0</span> шт.</dt><dd class="num" id="pBatch">0 ₽</dd>
+      <dt>Разработка модели</dt><dd class="num" id="pDev">0 ₽</dd>
+      <dt>Итого к оплате</dt><dd class="num big" id="pTotal">0 ₽</dd>
+      <dt>Предоплата <span id="ppR">0</span>%</dt><dd class="num" id="pPre">0 ₽</dd>
+      <dt>Ткани закупить</dt><dd class="num" id="pMeters">0 м</dd>
+    </dl>
+    <div class="acts">
+      <button class="btn btn-brass" type="button" id="copy">Скопировать расчёт для заказчика</button>
+      <button class="btn btn-ghost" type="button" id="share">Отправить в Telegram</button>
+    </div>
+    <button class="reset" type="button" id="reset">Вернуть пример</button>
+  </aside>
+</main>
+
+<footer>Цифры в примере примерные — замените на свои. Ваши цены сохраняются в этом браузере.</footer>
+
+<div class="mbar hide" id="mbar">
+  <div><b class="num" id="mOne">0 ₽</b><small class="num" id="mTotal">итого 0 ₽</small></div>
+  <a class="btn btn-brass" href="#result">Итог</a>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  var KEY='poshiv-raschet-v1';
+  var EXAMPLE={
+    model:'Юбка макси, крой по косой',
+    fabricName:'русский сатин 220–240, чёрный',
+    cur:'usd', fPrice:'2,5', rate:'89', use:'2', waste:'3',
+    sizes:[['42',45],['44',60],['46',60],['48',45]],
+    acc:[['Резинка 5 см',25],['Лейбл и размерник',10],['Этикетка 58×40 и ЧЗ',5],['Пакет 25×30',5],['Короб (доля)',5],['Доставка ткани (доля)',10]],
+    work:[['Раскрой и пошив',180],['ВТО',25],['ОТК',15]],
+    dev:[['Мерки и лекало',3000],['Градация на 4 размера',1050],['Печать лекал',2050],['Примерки на модели',3000]],
+    tax:'6', margin:'0', prepay:'50', round:'10'
+  };
+  function clone(o){return JSON.parse(JSON.stringify(o))}
+  var S=null;
+  try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+  if(!S||!S.sizes||!S.acc||!S.work||!S.dev)S=clone(EXAMPLE);
+
+  var $=function(id){return document.getElementById(id)};
+  function n(v){v=String(v==null?'':v).replace(/\s/g,'').replace(',','.');var x=parseFloat(v);return isFinite(x)?x:0}
+  function fmt(x,d){return x.toLocaleString('ru-RU',{maximumFractionDigits:d||0})}
+  function rub(x){return fmt(Math.round(x))+' ₽'}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+  var simple=['model','fabricName','fPrice','rate','use','waste','tax','margin','prepay','round'];
+  simple.forEach(function(k){$(k).addEventListener('input',function(){S[k]=this.value;calc()})});
+
+  function setCur(c){S.cur=c;$('curRub').setAttribute('aria-pressed',String(c==='rub'));$('curUsd').setAttribute('aria-pressed',String(c==='usd'));$('fCur').textContent=c==='usd'?'$':'₽';$('rateWrap').style.display=c==='usd'?'':'none'}
+  $('curRub').onclick=function(){if(S.cur==='usd'){S.fPrice=fmt(n(S.fPrice)*n(S.rate),2);$('fPrice').value=S.fPrice}setCur('rub');calc()};
+  $('curUsd').onclick=function(){if(S.cur==='rub'&&n(S.rate)>0){S.fPrice=fmt(n(S.fPrice)/n(S.rate),2);$('fPrice').value=S.fPrice}setCur('usd');calc()};
+
+  function renderList(key,isSize){
+    var el=$(key);el.innerHTML='';
+    S[key].forEach(function(r,i){
+      var d=document.createElement('div');d.className='row'+(isSize?' size':'');
+      var a=document.createElement('input');a.className='t';a.value=r[0];a.setAttribute('aria-label',isSize?'Размер':'Название');
+      var w=document.createElement('span');w.className='in';
+      var b=document.createElement('input');b.className='has-u';b.inputMode='decimal';b.value=r[1];b.setAttribute('aria-label',isSize?'Количество':'Цена за изделие');
+      var u=document.createElement('span');u.className='u';u.textContent=isSize?'шт.':'₽';w.append(b,u);
+      var x=document.createElement('button');x.type='button';x.className='x';x.textContent='×';x.setAttribute('aria-label','Удалить строку');
+      a.oninput=function(){r[0]=this.value;calc()};
+      b.oninput=function(){r[1]=this.value;calc()};
+      x.onclick=function(){S[key].splice(i,1);renderList(key,isSize);calc()};
+      d.append(a,w,x);el.appendChild(d);
+    });
+  }
+  function addRow(key,isSize){S[key].push(['',0]);renderList(key,isSize);var ins=$(key).querySelectorAll('input.t');ins[ins.length-1].focus();calc()}
+  $('addSize').onclick=function(){addRow('sizes',true)};
+  $('addAcc').onclick=function(){addRow('acc')};
+  $('addWork').onclick=function(){addRow('work')};
+  $('addDev').onclick=function(){addRow('dev')};
+
+  function sumRows(a){return a.reduce(function(s,r){return s+n(r[1])},0)}
+  var R={};
+  function calc(){
+    var qty=Math.round(sumRows(S.sizes));
+    var priceM=S.cur==='usd'?n(S.fPrice)*n(S.rate):n(S.fPrice);
+    var k=1+n(S.waste)/100;
+    var fabric=priceM*n(S.use)*k;
+    var acc=sumRows(S.acc), work=sumRows(S.work), dev=sumRows(S.dev);
+    var base=fabric+acc+work;
+    var marginR=base*n(S.margin)/100;
+    var t=Math.min(Math.max(n(S.tax),0),90)/100;
+    var pre=base+marginR;
+    var step=n(S.round)||1;
+    var one=Math.ceil(pre/(1-t)/step-1e-9)*step;
+    var taxR=one*t;
+    var batch=one*qty, total=batch+dev, prepay=total*n(S.prepay)/100;
+    var meters=n(S.use)*k*qty;
+    R={qty:qty,one:one,batch:batch,dev:dev,total:total,prepay:prepay,acc:acc,work:work};
+
+    $('qtyOut').textContent=fmt(qty)+' шт.';
+    $('fabricOut').textContent=rub(fabric)+(priceM?' · '+fmt(priceM)+' ₽/м':'');
+    $('accOut').textContent=rub(acc);$('workOut').textContent=rub(work);$('devOut').textContent=rub(dev);
+    $('pOne').textContent=fmt(one);
+    $('taxNote').textContent=t>0?'Без налога — '+rub(pre)+', налог '+rub(taxR)+' с изделия':'Налог не заложен';
+    $('qtyR').textContent=fmt(qty);$('ppR').textContent=fmt(n(S.prepay));
+    $('pBatch').textContent=rub(batch);$('pDev').textContent=rub(dev);$('pTotal').textContent=rub(total);$('pPre').textContent=rub(prepay);
+    $('pMeters').textContent='≈ '+fmt(Math.ceil(meters))+' м';
+    $('mOne').textContent=rub(one)+' / шт.';$('mTotal').textContent='итого '+rub(total);
+
+    var parts=[['Ткань',fabric,'--c-fabric'],['Фурнитура и упаковка',acc,'--c-acc'],['Работа',work,'--c-work'],['Наценка и округление',one-base-taxR,'--c-margin'],['Налог',taxR,'--c-tax']].filter(function(p){return p[1]>=1});
+    var bar=$('bar'),lg=$('legend');bar.innerHTML='';lg.innerHTML='';
+    parts.forEach(function(p){
+      var i=document.createElement('i');i.style.width=(one?p[1]/one*100:0)+'%';i.style.background='var('+p[2]+')';i.title=p[0];bar.appendChild(i);
+      var s=document.createElement('span');s.style.setProperty('--dot','var('+p[2]+')');s.textContent=p[0];
+      var e=document.createElement('em');e.className='num';e.textContent=rub(p[1]);lg.append(s,e);
+    });
+    save();
+  }
+
+  function lc(s){return s.length>1&&/[A-ZА-ЯЁ]/.test(s[1])?s:s.charAt(0).toLowerCase()+s.slice(1)}
+  function names(list){return list.filter(function(r){return n(r[1])>0&&String(r[0]).trim()}).map(function(r){return lc(String(r[0]).trim())})}
+  function text(){
+    var sz=S.sizes.filter(function(r){return n(r[1])>0}).map(function(r){return r[0]+' — '+fmt(n(r[1]))}).join(', ');
+    var inc=['ткань ('+fmt(n(S.use),2)+' м'+(S.fabricName?', '+S.fabricName:'')+')'];
+    var a=names(S.acc),w=names(S.work);
+    if(a.length)inc.push(a.join(', '));
+    if(w.length)inc.push(w.join(', '));
+    var L=['Расчёт партии: '+(S.model||'изделие'),
+      'Разбивка: '+sz+' (итого '+fmt(R.qty)+' шт.)',
+      'Цена под ключ: '+rub(R.one)+' за изделие'+(n(S.tax)>0?', с налогом':''),
+      'В цену входит: '+inc.join('; '),
+      'Партия: '+rub(R.batch)];
+    if(R.dev>0)L.push('Разработка модели (разово): '+rub(R.dev));
+    L.push('Итого к оплате: '+rub(R.total));
+    if(n(S.prepay)>0)L.push('Предоплата '+fmt(n(S.prepay))+'%: '+rub(R.prepay));
+    L.push('Расчёт от '+new Date().toLocaleDateString('ru-RU'));
+    return L.join('\n');
+  }
+  function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(function(){t.classList.remove('on')},2200)}
+  function copyText(s){
+    if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(s);
+    return new Promise(function(ok,bad){var a=document.createElement('textarea');a.value=s;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){bad(e)}a.remove()});
+  }
+  $('copy').onclick=function(){copyText(text()).then(function(){toast('Расчёт скопирован — вставьте в чат')},function(){toast('Не удалось скопировать')})};
+  $('share').onclick=function(){
+    var s=text();
+    if(navigator.share&&matchMedia('(pointer:coarse)').matches){navigator.share({text:s}).catch(function(){});return}
+    window.open('https://t.me/share/url?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent(s),'_blank','noopener');
+  };
+  $('reset').onclick=function(){S=clone(EXAMPLE);init();toast('Пример восстановлен')};
+
+  function init(){simple.forEach(function(k){$(k).value=S[k]});setCur(S.cur||'usd');renderList('sizes',true);renderList('acc');renderList('work');renderList('dev');calc()}
+  init();
+
+  var mbar=$('mbar'),res=$('result'),hero=document.querySelector('.hero');
+  function upd(){var r=res.getBoundingClientRect(),h=hero.getBoundingClientRect();mbar.classList.toggle('hide',h.bottom>innerHeight*.5||(r.top<innerHeight-60&&r.bottom>0))}
+  window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();
+})();
+</script>
+</body>
+</html>
