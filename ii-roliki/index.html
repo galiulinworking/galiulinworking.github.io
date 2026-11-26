@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>AI-ролики: примеры</title>
+<style>
+  :root { --bg: #111214; --card: #1b1d21; --ink: #f2f2f0; --muted: #a3a6ad; --accent: #e3a13b; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) { --bg: #f4f2ec; --card: #ffffff; --ink: #17191d; --muted: #5d6068; --accent: #b8741a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 36px 16px 56px; }
+  h1 { font-size: clamp(26px, 4.4vw, 40px); line-height: 1.12; margin: 0 0 10px; }
+  .lead { color: var(--muted); max-width: 60ch; margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px; align-items: start; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  figure { margin: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+  video { display: block; width: 100%; height: auto; background: #000; }
+  figcaption { padding: 14px 16px 16px; }
+  figcaption b { display: block; margin-bottom: 4px; }
+  figcaption span { color: var(--muted); font-size: 15px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 600; color: var(--bg); background: var(--accent); border-radius: 999px; padding: 2px 10px; margin-bottom: 8px; }
+  .how { margin-top: 28px; background: var(--card); border-radius: 16px; padding: 20px; }
+  .how h2 { margin: 0 0 10px; font-size: 20px; }
+  .how ol { margin: 0; padding-left: 20px; color: var(--muted); }
+  .how li { margin-bottom: 6px; }
+  .how b { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1>AI-ролики под ваши площадки</h1>
+  <p class="lead">Два ролика, сделанных сегодня с нуля: кадр и движение — нейросетью, без съёмки. Вертикальный — под Клипы ВК, Shorts и Reels; горизонтальный — под сайт и рекламу.</p>
+  <div class="grid">
+    <figure>
+      <video src="v-kofe.mp4" poster="v-kofe.jpg" muted loop playsinline autoplay controls preload="metadata"></video>
+      <figcaption><span class="tag">9:16</span><b>Реклама кофейни, 6 секунд</b><span>Молоко закручивается в кофе, мягкий наезд камеры — первый кадр цепляет без звука.</span></figcaption>
+    </figure>
+    <figure>
+      <video src="v-dom.mp4" poster="v-dom.jpg" muted loop playsinline autoplay controls preload="metadata"></video>
+      <figcaption><span class="tag">16:9</span><b>Застройщик: дом под ключ, 6 секунд</b><span>Плавный наезд на дом на закате — для первого экрана сайта или фона рекламы.</span></figcaption>
+    </figure>
+  </div>
+  <section class="how">
+    <h2>Как работаю с потоком роликов</h2>
+    <ol>
+      <li><b>Идея и сценарий</b> — хук в первые 2 секунды, один смысл на ролик.</li>
+      <li><b>Кадры</b> — генерирую ключевые кадры, согласуем стиль один раз и держим его во всей серии.</li>
+      <li><b>Движение и монтаж</b> — оживляю кадры, собираю ролик, субтитры, музыка, обложка.</li>
+      <li><b>План на неделю</b> — сразу пачкой, чтобы публикации шли без пропусков.</li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>
