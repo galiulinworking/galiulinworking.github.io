@@ -41,6 +41,7 @@ svg{display:block}
 .btn{font:600 calc(16px * var(--t))/1 var(--body);border:0;border-radius:var(--r-sm);padding:16px 22px;cursor:pointer;background:var(--accent);color:var(--accent-ink);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:filter .15s}
 .btn:hover{filter:brightness(1.07)}
 .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.55);backdrop-filter:blur(6px)}
+#hero .btn-ghost{backdrop-filter:none} /* размытие поверх ролика пересчитывается каждый кадр — тормозит прокрутку */
 .btn-ghost:hover{background:rgba(255,255,255,.22)}
 .num-tab{font-variant-numeric:tabular-nums}
 section[id]{scroll-margin-top:70px}
@@ -606,49 +607,34 @@ const CONFIG = {
   /* ---------- Первый экран: видео идёт вместе с прокруткой ---------- */
   const hero = $("#hero"), video = $("#heroVideo"), copy = $("#heroCopy"), end = $("#heroEnd"), hint = $("#scrollHint");
   if (!reduced) {
-    let ready = false, visible = false, raf = 0, media = video, scrub;
-    if (innerWidth < 700) {
-      // Телефон: кадры ролика на холсте вместо <video>. Встроенные браузеры Android (Xiaomi и др.)
-      // перехватывают <video> своим плеером с кнопкой паузы — картинки перехватить нечем.
-      const N = 71, src = i => `seq-m/f${String(i + 1).padStart(3, "0")}.webp`;
-      const cv = document.createElement("canvas");
-      cv.className = "hero-video hero-media ph"; cv.width = 608; cv.height = 1080; cv.setAttribute("aria-hidden", "true");
-      video.replaceWith(cv); media = cv;
-      const ctx = cv.getContext("2d"), frames = new Array(N);
-      let shown = -1, cur = 0;
-      const load = i => new Promise(res => { const im = new Image(); im.onload = () => { frames[i] = im; res(); }; im.onerror = res; im.src = src(i); });
-      // Сначала первый кадр, затем каждый 8-й (грубая анимация уже работает), потом остальные
-      load(0).then(() => {
-        ready = true;
-        const seen = new Set([0]);
-        [8, 4, 2, 1].forEach(step => { for (let i = 0; i < N; i += step) if (!seen.has(i)) { seen.add(i); load(i); } });
-      });
-      scrub = p => {
-        cur += (p - cur) * 0.3; if (Math.abs(p - cur) < 0.001) cur = p;
-        const t = Math.round(cur * (N - 1));
-        let i = -1;
-        for (let d = 0; d < N && i < 0; d++) { if (frames[t - d]) i = t - d; else if (frames[t + d]) i = t + d; }   // ближайший загруженный кадр
-        if (i >= 0 && i !== shown) { ctx.drawImage(frames[i], 0, 0, cv.width, cv.height); shown = i; }
-      };
-    } else {
-      // Компьютер: ролик 1920×1072. play() не вызываем — только перемотка по прокрутке
-      video.src = "video/hero.mp4";
-      let want = 0;
-      video.addEventListener("loadeddata", () => { ready = true; });
-      // Новая перемотка — только когда закончилась предыдущая (иначе на слабом железе кадр «стоит»)
-      const seek = () => {
-        if (!ready || video.seeking) return;
-        if (Math.abs(video.currentTime - want) > 0.02) video.currentTime = want;
-      };
-      video.addEventListener("seeked", seek);
-      scrub = p => {
-        if (!video.duration) return;
-        const target = p * (video.duration - 0.05);
-        want += (target - want) * 0.25;
-        if (Math.abs(target - want) < 0.004) want = target;
-        seek();
-      };
-    }
+    let ready = false, visible = false, raf = 0, media = video, scrub, pos = -1;
+    // Кадры ролика на холсте — и на телефоне, и на компьютере. <video> по прокрутке НЕ перематывать:
+    // каждая перемотка заново собирает кадр (≈60 мс → 13 кадров/с, картинка дёргается), а встроенные
+    // браузеры Android ещё и перехватывают <video> своим плеером. Готовую картинку холст рисует мгновенно.
+    const mob = innerWidth < 700, N = mob ? 71 : 71, dir = mob ? "seq-m" : "seq-d";
+    const src = i => `${dir}/f${String(i + 1).padStart(3, "0")}.webp`;
+    const cv = document.createElement("canvas");
+    cv.className = "hero-video hero-media"; cv.setAttribute("aria-hidden", "true"); cv.style.filter = "none";
+    video.replaceWith(cv); media = cv;
+    const ctx = cv.getContext("2d"), frames = new Array(N);
+    let shown = -1, cur = 0, lastB = "";
+    // decode() — картинка расшифрована заранее, первая прорисовка кадра не тормозит
+    const load = i => new Promise(res => { const im = new Image(); im.src = src(i); im.decode().then(() => { frames[i] = im; }, () => {}).then(res); });
+    // Сначала первый кадр, затем каждый 8-й (грубая анимация уже работает), потом остальные
+    load(0).then(() => {
+      if (!frames[0]) return;   // кадров нет — остаётся фото
+      cv.width = frames[0].naturalWidth; cv.height = frames[0].naturalHeight; ready = true;
+      const seen = new Set([0]);
+      [8, 4, 2, 1].forEach(st => { for (let i = 0; i < N; i += st) if (!seen.has(i)) { seen.add(i); load(i); } });
+    });
+    scrub = p => {
+      cur += (p - cur) * 0.3; if (Math.abs(p - cur) < 0.001) cur = p;
+      const t = Math.round(cur * (N - 1)); let i = -1;
+      for (let d = 0; d < N && i < 0; d++) { if (frames[t - d]) i = t - d; else if (frames[t + d]) i = t + d; }   // ближайший загруженный кадр
+      // Яркость из панели «Настроить вид» — при отрисовке: CSS filter на холсте пересчитывается каждый кадр и тормозит прокрутку
+      const b = document.documentElement.style.getPropertyValue("--bright").trim() || "1";
+      if (i >= 0 && (i !== shown || b !== lastB)) { ctx.filter = b === "1" ? "none" : `brightness(${b})`; ctx.drawImage(frames[i], 0, 0, cv.width, cv.height); shown = i; lastB = b; pos = i / (N - 1); }
+    };
     const progress = () => {
       const r = hero.getBoundingClientRect(), span = hero.offsetHeight - innerHeight;
       return Math.min(1, Math.max(0, -r.top / span));
