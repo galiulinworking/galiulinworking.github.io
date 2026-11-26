@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Ближайшая запись к врачу</title>
+<style>
+  :root {
+    --bg: #f3f6f7; --card: #ffffff; --ink: #14242b; --muted: #5d6f76; --line: #dde6e9;
+    --accent: #0f7c80; --accent-soft: #e3f2f2; --slot: #f6fafa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1719; --card: #172326; --ink: #e6f0f2; --muted: #93a7ad; --line: #26363a;
+      --accent: #48b7b9; --accent-soft: #1d3638; --slot: #1b2a2d;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; padding: 32px 16px 56px; }
+  header h1 { font-size: clamp(24px, 4vw, 34px); line-height: 1.15; margin: 0 0 6px; }
+  header p { color: var(--muted); margin: 0 0 8px; max-width: 62ch; }
+  .sync { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #2fb36d; box-shadow: 0 0 0 4px rgba(47,179,109,.18); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .who { display: flex; gap: 14px; align-items: center; }
+  .ava { width: 56px; height: 56px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 20px; flex: none; }
+  .who h2 { font-size: 18px; margin: 0; line-height: 1.25; }
+  .who span { color: var(--muted); font-size: 14px; }
+  .label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; }
+  .next { font-weight: 700; color: var(--accent); }
+  .slots { display: flex; flex-wrap: wrap; gap: 8px; }
+  .slot { border: 1px solid var(--line); background: var(--slot); color: var(--ink); border-radius: 10px; padding: 8px 12px; font: inherit; font-size: 15px; cursor: pointer; min-height: 40px; }
+  .slot:hover, .slot:focus-visible { border-color: var(--accent); outline: none; }
+  .slot[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .branches { display: flex; flex-wrap: wrap; gap: 6px; }
+  .branch { font-size: 14px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 4px 10px; }
+  .empty { color: var(--muted); font-size: 15px; }
+  .how { margin-top: 40px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .how h2 { font-size: 20px; margin: 0 0 12px; }
+  .how ol { margin: 0; padding-left: 20px; color: var(--muted); }
+  .how li { margin-bottom: 6px; }
+  .how b { color: var(--ink); }
+  .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-size: 15px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: calc(100% - 32px); }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ближайшее свободное время — прямо в карточке врача</h1>
+    <p>Пример: данные о врачах уже есть на сайте, а свободные окна и филиалы подтягиваются из графика в CRM. Клиника условная, расписание — тестовое.</p>
+    <div class="sync"><span class="dot" aria-hidden="true"></span><span id="sync">Обновлено из CRM только что</span></div>
+  </header>
+  <section class="grid" id="grid" aria-live="polite"></section>
+  <section class="how">
+    <h2>Как это работает</h2>
+    <ol>
+      <li><b>Раз в 5 минут</b> сервер забирает график врачей из CRM по API.</li>
+      <li><b>Считает</b> ближайшие свободные окна и филиалы, где врач принимает на этой неделе.</li>
+      <li><b>Сайт берёт готовые данные</b> с сервера, а не из CRM напрямую: страница открывается быстро, а ключ CRM никто не увидит.</li>
+      <li><b>Если CRM недоступна</b>, показывается последнее известное расписание с пометкой, а не пустая карточка.</li>
+    </ol>
+  </section>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script>
+  // Тестовые данные в том виде, как их отдаёт сервер после разбора графика из CRM.
+  const doctors = [
+    { name: "Иванова Анна Сергеевна", role: "Терапевт · стаж 12 лет", ini: "АИ",
+      branches: ["ул. Ленина, 15", "пр. Мира, 40"], days: [0, 0, 1, 2], times: ["09:30", "11:00", "14:20", "16:40"] },
+    { name: "Петров Олег Викторович", role: "Кардиолог · стаж 18 лет", ini: "ОП",
+      branches: ["пр. Мира, 40"], days: [1, 1, 3], times: ["10:15", "12:45", "15:00"] },
+    { name: "Смирнова Елена Игоревна", role: "Невролог · стаж 9 лет", ini: "ЕС",
+      branches: ["ул. Ленина, 15", "ул. Садовая, 7", "пр. Мира, 40"], days: [0, 2, 2, 4], times: ["13:00", "08:40", "17:30", "10:00"] },
+    { name: "Кузнецов Дмитрий Андреевич", role: "ЛОР · стаж 7 лет", ini: "ДК",
+      branches: ["ул. Садовая, 7"], days: [], times: [] }
+  ];
+  const fmtDay = (offset) => {
+    const d = new Date(); d.setDate(d.getDate() + offset);
+    if (offset === 0) return "сегодня";
+    if (offset === 1) return "завтра";
+    return d.toLocaleDateString("ru-RU", { weekday: "short", day: "numeric", month: "long" });
+  };
+  const grid = document.getElementById("grid");
+  const toast = document.getElementById("toast");
+  let toastTimer;
+  doctors.forEach((doc) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const slots = doc.days.map((day, i) => ({ day, time: doc.times[i] }));
+    const first = slots[0];
+    card.innerHTML = `
+      <div class="who"><div class="ava" aria-hidden="true">${doc.ini}</div>
+        <div><h2>${doc.name}</h2><span>${doc.role}</span></div></div>
+      <div><div class="label">Ближайшая запись</div>
+        ${first ? `<div class="next">${fmtDay(first.day)}, ${first.time}</div>` : `<div class="empty">Свободных окон на неделе нет — оставьте заявку, позвоним</div>`}</div>
+      ${slots.length ? `<div><div class="label">Свободное время</div><div class="slots"></div></div>` : ""}
+      <div><div class="label">Принимает в филиалах</div><div class="branches">${doc.branches.map((b) => `<span class="branch">${b}</span>`).join("")}</div></div>`;
+    const box = card.querySelector(".slots");
+    slots.forEach((s) => {
+      const b = document.createElement("button");
+      b.className = "slot"; b.type = "button"; b.setAttribute("aria-pressed", "false");
+      b.textContent = `${fmtDay(s.day)}, ${s.time}`;
+      b.addEventListener("click", () => {
+        box.querySelectorAll(".slot").forEach((x) => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        toast.textContent = `Выбрано: ${doc.name.split(" ")[0]}, ${b.textContent}. Дальше — форма записи или передача в CRM.`;
+        toast.classList.add("show"); clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+      });
+      box && box.appendChild(b);
+    });
+    grid.appendChild(card);
+  });
+  let mins = 0;
+  setInterval(() => { mins += 1; document.getElementById("sync").textContent = `Обновлено из CRM ${mins} мин назад`; }, 60000);
+</script>
+</body>
+</html>
