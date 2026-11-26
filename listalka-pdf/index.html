@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Листалка PDF — демо</title>
+<meta name="description" content="Демо HTML5-листалки из PDF: сжатие 52,6 → 4,2 МБ, перелистывание, свайпы, ленивая загрузка, лупа, полный экран, оглавление.">
+<meta name="robots" content="noindex">
+<style>
+:root{
+  --bg:#17120f; --bg2:#211a16; --line:#3a2f28; --ink:#f4ece2; --muted:#b9a998; --acc:#e0a35e;
+  --bar-h:64px; --top-h:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:radial-gradient(120% 80% at 50% 40%,#2a201a 0%,var(--bg) 60%);color:var(--ink);
+  font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;-webkit-tap-highlight-color:transparent}
+button,a.btn{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-decoration:none}
+.top{height:var(--top-h);display:flex;align-items:center;gap:12px;padding:0 16px;border-bottom:1px solid var(--line)}
+.top h1{font:600 17px/1.2 Georgia,"Times New Roman",serif;letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);border:1px solid #5a4330;border-radius:99px;padding:2px 8px;white-space:nowrap}
+.top .sp{flex:1}
+.stat{display:flex;gap:14px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+.stat b{color:var(--ink);font-weight:600}
+.stage{position:relative;height:calc(100% - var(--top-h) - var(--bar-h));display:flex;align-items:center;justify-content:center;overflow:hidden}
+#book{margin:0 auto}
+.page{background:#fbf8f2;overflow:hidden}
+.page .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#a8988a;font-size:13px;background:#f3ede4}
+.page canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.page .lnk{position:absolute;cursor:pointer;border-radius:3px}
+.page .lnk:hover{background:rgba(224,163,94,.15)}
+.loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.bar{height:var(--bar-h);display:flex;align-items:center;justify-content:center;gap:4px;padding:0 10px env(safe-area-inset-bottom);border-top:1px solid var(--line);background:rgba(23,18,15,.85)}
+.bar button,.bar a.btn{height:44px;min-width:44px;padding:0 12px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:var(--ink)}
+.bar button:hover,.bar a.btn:hover{background:#2c231d}
+.bar button:disabled{opacity:.35;cursor:default;background:none}
+.bar .num{min-width:92px;text-align:center;color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
+.bar svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bar .lbl{font-size:13.5px}
+.panel{position:fixed;top:0;bottom:0;left:0;width:min(340px,88vw);background:var(--bg2);border-right:1px solid var(--line);transform:translateX(-102%);transition:transform .25s ease;z-index:30;display:flex;flex-direction:column}
+.panel.open{transform:none}
+.panel header{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--line);font:600 17px Georgia,serif}
+.panel ol{list-style:none;overflow:auto;padding:8px}
+.panel li button{width:100%;display:flex;justify-content:space-between;gap:12px;text-align:left;padding:12px;border-radius:8px}
+.panel li button:hover{background:#2c231d}
+.panel li span:last-child{color:var(--acc);font-variant-numeric:tabular-nums}
+.about{padding:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);line-height:1.5}
+.about b{color:var(--ink)}
+.zoom{position:fixed;inset:0;background:rgba(10,8,6,.96);z-index:40;display:none;flex-direction:column}
+.zoom.open{display:flex}
+.zoom .zt{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line)}
+.zoom .zt .sp{flex:1}
+.zoom .zt button{height:44px;min-width:44px;border-radius:10px;padding:0 12px;font-size:18px}
+.zoom .zt button:hover{background:#2c231d}
+.zoom .zs{flex:1;overflow:auto;touch-action:pan-x pan-y pinch-zoom}
+.zoom canvas{display:block;margin:16px auto;box-shadow:0 10px 40px rgba(0,0,0,.5);background:#fff}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25;display:none}
+.scrim.open{display:block}
+@media (max-width:760px){
+  .stat{display:none}
+  .bar .lbl{display:none}
+  .bar button,.bar a.btn{padding:0 9px}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Струны · 25 лет фестиваля</h1>
+  <span class="badge">демо</span>
+  <span class="sp"></span>
+  <div class="stat" id="stat"></div>
+</div>
+
+<div class="stage" id="stage"><div class="loading" id="loading">Открываю книгу…</div><div id="book"></div></div>
+
+<div class="bar">
+  <button id="tocBtn" title="Содержание"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span class="lbl">Содержание</span></button>
+  <button id="prev" title="Назад (←)"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <span class="num" id="num">—</span>
+  <button id="next" title="Вперёд (→)"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  <button id="zoomBtn" title="Лупа"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5M11 8v6M8 11h6"/></svg><span class="lbl">Лупа</span></button>
+  <button id="fsBtn" title="Во весь экран"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="lbl">Экран</span></button>
+  <a class="btn" id="dl" href="book.pdf" download title="Скачать PDF"><svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span class="lbl">PDF</span></a>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel" aria-label="Содержание">
+  <header>Содержание <button id="tocClose" title="Закрыть" style="font-size:22px;padding:0 8px">×</button></header>
+  <ol id="toc"></ol>
+  <div class="about" id="about"></div>
+</aside>
+
+<div class="zoom" id="zoom">
+  <div class="zt">
+    <button id="zOut" title="Меньше">−</button><button id="zIn" title="Больше">+</button>
+    <span id="zLbl" style="color:var(--muted);font-size:13px"></span>
+    <span class="sp"></span>
+    <button id="zClose" style="font-size:15px">Закрыть</button>
+  </div>
+  <div class="zs" id="zs"></div>
+</div>
+
+<script src="vendor/pdf.min.js"></script>
+<script src="vendor/page-flip.browser.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
+const $ = id => document.getElementById(id);
+const URL_PDF = 'book.pdf';
+let pdf, flip, pages = [], N = 0, pageW = 0, ratio = 0.7067, cur = 0, zScale = 2, vw0 = 595, info = {};
+const rendered = new Map(); // номер страницы -> {scale, done}
+
+const num = x => String(x).replace('.', ',');
+function mb(b){ return num((b / 1048576).toFixed(1)) + ' МБ'; }
+function fetchedBytes(){
+  return performance.getEntriesByType('resource').filter(e => e.name.includes(URL_PDF))
+    .reduce((s, e) => s + Math.max(e.transferSize || 0, e.encodedBodySize || 0, e.decodedBodySize || 0), 0);
+}
+function updStat(){
+  const r = [...rendered.values()].filter(x => x.done).length, got = fetchedBytes();
+  $('stat').innerHTML = (info.heavy_mb ? `<span>Файл: <b>${num(info.heavy_mb)} → ${num(info.light_mb)} МБ</b></span>` : '')
+    + `<span>Скачано сейчас: <b>${got ? mb(got) : '…'}</b></span><span>Отрисовано: <b>${r} из ${N}</b> стр.</span>`;
+}
+
+function layout(){
+  const st = $('stage'), aw = st.clientWidth - 24, ah = st.clientHeight - 24;
+  const portrait = aw < 760;
+  let w = portrait ? Math.min(aw, ah * ratio) : Math.min(aw / 2, ah * ratio);
+  w = Math.floor(Math.max(200, w));
+  return {w, h: Math.floor(w / ratio), portrait};
+}
+
+async function renderPage(i){
+  if (i < 0 || i >= N) return;
+  const el = pages[i], dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const scale = (pageW * dpr) / vw0;
+  const r = rendered.get(i);
+  if (r && Math.abs(r.scale - scale) < .01) return;
+  const job = {scale, done: false}; rendered.set(i, job);
+  const p = await pdf.getPage(i + 1);
+  const vp = p.getViewport({scale});
+  const c = document.createElement('canvas');
+  c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+  await p.render({canvasContext: c.getContext('2d'), viewport: vp}).promise;
+  if (rendered.get(i) !== job || pages[i] !== el) return; // страницу уже освободили
+  el.querySelector('canvas')?.remove(); el.prepend(c);
+  job.done = true; el.querySelector('.ph')?.remove();
+  addLinks(p, el); updStat();
+}
+async function addLinks(p, el){
+  if (el._links) return; el._links = true;
+  const ann = await p.getAnnotations(), vp = p.getViewport({scale: 1});
+  for (const a of ann){
+    if (a.subtype !== 'Link' || !a.dest) continue;
+    const dest = typeof a.dest === 'string' ? await pdf.getDestination(a.dest) : a.dest;
+    const idx = await pdf.getPageIndex(dest[0]);
+    const [x1, y1, x2, y2] = pdfjsLib.Util.normalizeRect(a.rect);
+    const d = document.createElement('div'); d.className = 'lnk'; d.title = 'Перейти на стр. ' + (idx + 1);
+    Object.assign(d.style, {left: x1 / vp.width * 100 + '%', top: (vp.height - y2) / vp.height * 100 + '%',
+      width: (x2 - x1) / vp.width * 100 + '%', height: (y2 - y1) / vp.height * 100 + '%'});
+    const stop = e => e.stopPropagation();
+    ['mousedown', 'touchstart', 'pointerdown'].forEach(t => d.addEventListener(t, stop));
+    d.addEventListener('click', e => { e.stopPropagation(); go(idx); });
+    el.appendChild(d);
+  }
+}
+// ленивая отрисовка: рисуем только страницы рядом с открытой, дальние освобождаем
+function around(i){
+  const want = [];
+  for (let k = i - 2; k <= i + 3; k++) if (k >= 0 && k < N) want.push(k);
+  want.sort((a, b) => Math.abs(a - i) - Math.abs(b - i));
+  (async () => { for (const k of want) await renderPage(k); })();
+  for (const [k] of [...rendered]) if (Math.abs(k - i) > 7){
+    const c = pages[k].querySelector('canvas'); if (c){ c.width = c.height = 0; c.remove(); }
+    rendered.delete(k);
+    if (!pages[k].querySelector('.ph')) pages[k].insertAdjacentHTML('afterbegin', '<div class="ph">стр. ' + (k + 1) + '</div>');
+  }
+  updStat();
+}
+function setNum(i){
+  cur = i;
+  const port = flip.getOrientation() === 'portrait';
+  let t;
+  if (port || i === 0 || i === N - 1) t = (i + 1) + ' из ' + N;
+  else { const a = i % 2 ? i : i - 1; t = (a + 1) + '–' + Math.min(a + 2, N) + ' из ' + N; }
+  $('num').textContent = t;
+  $('prev').disabled = i === 0; $('next').disabled = i >= N - 1;
+  around(i);
+}
+function go(i){ flip.flip(Math.max(0, Math.min(N - 1, i))); }
+
+function build(startAt){
+  const L = layout(); pageW = L.w;
+  const host = $('book'); host.innerHTML = ''; rendered.clear();
+  host.style.width = (L.portrait ? L.w : L.w * 2) + 'px'; host.style.height = L.h + 'px';
+  const box = document.createElement('div'); host.appendChild(box);
+  pages = [];
+  for (let i = 0; i < N; i++){
+    const d = document.createElement('div'); d.className = 'page';
+    if (i === 0 || i === N - 1) d.dataset.density = 'hard';
+    d.innerHTML = '<div class="ph">стр. ' + (i + 1) + '</div>';
+    box.appendChild(d); pages.push(d);
+  }
+  flip = new St.PageFlip(box, {width: L.w, height: L.h, size: 'fixed', showCover: true, usePortrait: true,
+    maxShadowOpacity: .45, mobileScrollSupport: false, flippingTime: 700, startPage: startAt || 0});
+  flip.loadFromHTML(pages);
+  flip.on('flip', e => setNum(e.data));
+  flip.on('changeOrientation', () => setNum(flip.getCurrentPageIndex()));
+  setNum(flip.getCurrentPageIndex());
+}
+
+(async function init(){
+  try { info = await (await fetch('book.json', {cache: 'no-store'})).json(); } catch (e) {}
+  pdf = await pdfjsLib.getDocument({url: URL_PDF, disableAutoFetch: true, disableStream: true, rangeChunkSize: 65536}).promise;
+  N = pdf.numPages;
+  const v = (await pdf.getPage(1)).getViewport({scale: 1}); vw0 = v.width; ratio = v.width / v.height;
+  $('loading').remove();
+  build(0);
+  const out = await pdf.getOutline() || [], ol = $('toc');
+  for (const o of out){
+    const dest = typeof o.dest === 'string' ? await pdf.getDestination(o.dest) : o.dest;
+    if (!dest) continue;
+    const idx = await pdf.getPageIndex(dest[0]);
+    const li = document.createElement('li');
+    li.innerHTML = '<button><span></span><span></span></button>';
+    li.querySelector('span').textContent = o.title; li.querySelectorAll('span')[1].textContent = idx + 1;
+    li.firstChild.onclick = () => { closePanel(); go(idx); };
+    ol.appendChild(li);
+  }
+  if (info.heavy_mb) $('about').innerHTML = `Исходный «печатный» PDF — <b>${num(info.heavy_mb)} МБ</b> (фото 300 DPI). После сжатия фото до 150 DPI и чистки метаданных — <b>${num(info.light_mb)} МБ</b>. Книга не скачивается целиком: браузер берёт только нужные куски файла, а рисуются только страницы рядом с открытой.<br><br>Тексты и фото условные — на их место встаёт ваш PDF.`;
+  updStat(); setInterval(updStat, 1500);
+})().catch(e => { $('loading').textContent = 'Не удалось открыть книгу: ' + e.message; });
+
+$('prev').onclick = () => flip.flipPrev();
+$('next').onclick = () => flip.flipNext();
+document.addEventListener('keydown', e => {
+  if ($('zoom').classList.contains('open')){ if (e.key === 'Escape') closeZoom(); return; }
+  if (e.key === 'ArrowLeft') flip.flipPrev();
+  if (e.key === 'ArrowRight') flip.flipNext();
+  if (e.key === 'Escape') closePanel();
+});
+function closePanel(){ $('panel').classList.remove('open'); $('scrim').classList.remove('open'); }
+$('tocBtn').onclick = () => { $('panel').classList.add('open'); $('scrim').classList.add('open'); };
+$('tocClose').onclick = closePanel; $('scrim').onclick = closePanel;
+$('fsBtn').onclick = () => {
+  const d = document.documentElement;
+  if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  else if (d.requestFullscreen) d.requestFullscreen(); else if (d.webkitRequestFullscreen) d.webkitRequestFullscreen();
+};
+// лупа: открытые страницы в высоком разрешении, с прокруткой и щипком
+async function drawZoom(){
+  const zs = $('zs'); zs.innerHTML = '';
+  const port = flip.getOrientation() === 'portrait';
+  let list = [cur];
+  if (!port && cur > 0 && cur < N - 1){ const a = cur % 2 ? cur : cur - 1; list = [a, a + 1].filter(x => x < N); }
+  const base = Math.min(zs.clientWidth - 32, 900), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  for (const i of list){
+    const p = await pdf.getPage(i + 1);
+    const css = base * zScale / 2;
+    const vp = p.getViewport({scale: css * dpr / vw0});
+    const c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+    c.style.width = css + 'px'; zs.appendChild(c);
+    p.render({canvasContext: c.getContext('2d'), viewport: vp});
+  }
+  $('zLbl').textContent = Math.round(zScale * 50) + '%';
+}
+function closeZoom(){ $('zoom').classList.remove('open'); $('zs').innerHTML = ''; }
+$('zoomBtn').onclick = () => { $('zoom').classList.add('open'); zScale = 2; drawZoom(); };
+$('zIn').onclick = () => { zScale = Math.min(6, zScale + .5); drawZoom(); };
+$('zOut').onclick = () => { zScale = Math.max(1, zScale - .5); drawZoom(); };
+$('zClose').onclick = closeZoom;
+let rt, lastW = innerWidth, lastH = innerHeight;
+addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => {
+  if (!pdf || (Math.abs(innerWidth - lastW) < 40 && Math.abs(innerHeight - lastH) < 120)) return;
+  lastW = innerWidth; lastH = innerHeight; const at = cur; flip.destroy(); build(at);
+}, 250); });
+</script>
+</body>
+</html>
