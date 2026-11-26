@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Как выбрать счётчик газа для частного дома — пример статьи для блога</title>
+<meta name="description" content="Как подобрать счётчик газа по типоразмеру G, направлению потока и месту установки: простая таблица и разбор частых ошибок.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c2228;--soft:#5a6570;--line:#e3e7ea;--bg:#fbfbf9;--acc:#0b6e8f;--acc-bg:#eaf4f7;--warn:#fff6e5}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.65 "Golos Text",system-ui,sans-serif}
+.note{background:var(--ink);color:#fff;font-size:14px;padding:10px 16px;text-align:center}
+main{max-width:720px;margin:0 auto;padding:40px 16px 80px}
+.crumbs{font-size:14px;color:var(--soft)}
+h1{font:700 clamp(30px,5vw,44px)/1.15 "PT Serif",Georgia,serif;margin:12px 0 16px;letter-spacing:-.01em}
+h2{font:700 26px/1.25 "PT Serif",Georgia,serif;margin:44px 0 12px}
+.lead{font-size:20px;color:var(--soft)}
+.meta{font-size:14px;color:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:24px 0}
+table{width:100%;border-collapse:collapse;font-size:16px;margin:16px 0}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--soft);font-size:14px}
+td:first-child{font-weight:700;white-space:nowrap}
+.box{background:var(--acc-bg);border-radius:14px;padding:20px 22px;margin:28px 0}
+.box b{display:block;margin-bottom:6px}
+.warn{background:var(--warn)}
+.prod{display:grid;gap:12px;margin:20px 0}
+.prod a{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--ink);text-decoration:none;background:#fff}
+.prod a:hover{border-color:var(--acc)}
+.prod span{color:var(--acc);font-weight:500;white-space:nowrap}
+ol li,ul li{margin:6px 0}
+.toc{font-size:16px}
+.toc a{color:var(--acc)}
+.seo{margin-top:56px;font-size:14px;color:var(--soft);border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:560px){table{font-size:14px}th,td{padding:8px 6px}.prod a{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="note">Пример статьи для блога магазина счётчиков · подготовлен к отклику, не опубликован</div>
+<main>
+  <div class="crumbs">Блог · Счётчики газа</div>
+  <h1>Как выбрать счётчик газа для частного дома</h1>
+  <p class="lead">Ошибиться можно в трёх местах: в типоразмере, в направлении потока и в месте установки. Разбираем по порядку — с таблицей, по которой подбор займёт пять минут.</p>
+  <div class="meta">Время чтения: 5 минут · Для владельцев частных домов и дач с газовым котлом или плитой</div>
+
+  <div class="toc">
+    <b>Содержание</b>
+    <ol>
+      <li><a href="#g">Что значит G1,6, G2,5, G4 и G6</a></li>
+      <li><a href="#calc">Как посчитать нужный типоразмер</a></li>
+      <li><a href="#dir">Левый или правый счётчик</a></li>
+      <li><a href="#t">Когда нужен счётчик с термокоррекцией</a></li>
+      <li><a href="#install">Кто устанавливает счётчик</a></li>
+    </ol>
+  </div>
+
+  <h2 id="g">Что значит G1,6, G2,5, G4 и G6</h2>
+  <p>Буква G и число — типоразмер счётчика. Он показывает, сколько газа прибор может пропустить за час. Главная цифра для подбора — максимальный расход: если все приборы в доме работают на полную мощность, счётчик должен с этим справиться.</p>
+  <table>
+    <tr><th>Типоразмер</th><th>Макс. расход, м³/ч</th><th>Обычно ставят</th></tr>
+    <tr><td>G1,6</td><td>2,5</td><td>только газовая плита</td></tr>
+    <tr><td>G2,5</td><td>4</td><td>плита и колонка</td></tr>
+    <tr><td>G4</td><td>6</td><td>плита и котёл отопления небольшого дома</td></tr>
+    <tr><td>G6</td><td>10</td><td>котёл большой мощности или несколько котлов</td></tr>
+    <tr><td>G10 и выше</td><td>16 и больше</td><td>коттеджи, мастерские, небольшие производства</td></tr>
+  </table>
+
+  <h2 id="calc">Как посчитать нужный типоразмер</h2>
+  <ol>
+    <li>Найдите в паспортах плиты, котла и колонки строку «расход газа, м³/ч» (иногда — «номинальная тепловая мощность»).</li>
+    <li>Сложите максимальный расход всех приборов, которые могут работать одновременно.</li>
+    <li>Выберите счётчик, у которого максимальный расход больше суммы, — лучше с запасом.</li>
+  </ol>
+  <div class="box"><b>Пример</b>Плита с четырьмя конфорками и котёл на 24 кВт. По паспортам вместе выходит около 3,5–4 м³/ч на полной мощности. G2,5 (до 4 м³/ч) работает на пределе, поэтому берут G4.</div>
+  <p>Слишком большой счётчик — тоже не лучший выбор: у каждого прибора есть минимальный расход, ниже которого он считает хуже. Для дома с одной плитой G6 не нужен.</p>
+
+  <h2 id="dir">Левый или правый счётчик</h2>
+  <p>Встаньте лицом к счётчику. Если газ приходит слева и уходит вправо — нужен «левый» прибор, если справа налево — «правый». Перепутаете — счётчик не встанет на место без переделки трубы. Перед заказом посмотрите на старый счётчик: стрелка направления нарисована на корпусе. Ещё сверьте расстояние между патрубками и резьбу с паспортом старого прибора.</p>
+
+  <h2 id="t">Когда нужен счётчик с термокоррекцией</h2>
+  <p>Газ сжимается на холоде и расширяется в тепле. Если счётчик стоит на улице или в неотапливаемой пристройке, зимой и летом обычный прибор посчитает один и тот же газ по-разному. Счётчик с термокоррекцией (в названии буква «Т», например G4Т) приводит показания к стандартной температуре. Для прибора на улице выбирайте именно его.</p>
+
+  <div class="box"><b>Подобрали типоразмер? Счётчики «Пульсар» в наличии:</b>
+    <div class="prod">
+      <a href="https://pulsarm-russia.ru/catalog/diafragmennye-schetchiki-gaza/">Диафрагменные G1,6 – G6, левые и правые <span>Смотреть в каталоге →</span></a>
+      <a href="https://pulsarm-russia.ru/catalog/diafragmennye-schetchiki-gaza/">G4Т и G6Т с термокоррекцией — для установки на улице <span>Смотреть в каталоге →</span></a>
+    </div>
+  </div>
+
+  <h2 id="install">Кто устанавливает счётчик</h2>
+  <div class="box warn"><b>Самостоятельно подключать газовый счётчик нельзя.</b>Установку и замену делает газовая служба или организация с допуском к газовым работам. Она же ставит пломбу и оформляет документы для поставщика газа. Ваша задача — правильно выбрать и купить прибор, чтобы монтажникам не пришлось приезжать второй раз.</div>
+  <p>Перед покупкой проверьте четыре вещи: типоразмер по таблице, направление потока, нужна ли термокоррекция и присоединительные размеры. Не уверены — пришлите фото старого счётчика в поддержку, подберём аналог.</p>
+
+  <div class="seo"><b>Как устроен пример.</b> Ключевые запросы: «как выбрать счетчик газа», «счетчик газа для частного дома», «G4 или G6», «левый или правый счетчик газа», «счетчик газа с термокоррекцией». Заголовки H2 повторяют вопросы из поиска, внутри — переходы на категорию каталога. Цифры максимального расхода — стандартные значения для типоразмеров; расход котла и плиты в примере — ориентировочный, точный указан в их паспортах.</div>
+</main>
+</body>
+</html>
