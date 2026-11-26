@@ -610,7 +610,7 @@ const CONFIG = {
     if (innerWidth < 700) {
       // Телефон: кадры ролика на холсте вместо <video>. Встроенные браузеры Android (Xiaomi и др.)
       // перехватывают <video> своим плеером с кнопкой паузы — картинки перехватить нечем.
-      const N = 72, src = i => `seq-m/f${String(i + 1).padStart(3, "0")}.webp`;
+      const N = 71, src = i => `seq-m/f${String(i + 1).padStart(3, "0")}.webp`;
       const cv = document.createElement("canvas");
       cv.className = "hero-video hero-media ph"; cv.width = 608; cv.height = 1080; cv.setAttribute("aria-hidden", "true");
       video.replaceWith(cv); media = cv;
