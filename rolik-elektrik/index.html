@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Ролик про Диму: пример</title>
+<style>
+  :root { --bg: #111214; --card: #1b1d21; --ink: #f2f2f0; --muted: #a3a6ad; --accent: #f0b429; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) { --bg: #f4f2ec; --card: #ffffff; --ink: #17191d; --muted: #5d6068; --accent: #b8741a; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 36px 16px 56px; }
+  h1 { font-size: clamp(26px, 4.4vw, 40px); line-height: 1.12; margin: 0 0 10px; }
+  .lead { color: var(--muted); max-width: 60ch; margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  figure { margin: 0; background: var(--card); border-radius: 16px; overflow: hidden; }
+  video { display: block; width: 100%; height: auto; background: #000; aspect-ratio: 9 / 16; }
+  figcaption { padding: 14px 16px 16px; }
+  figcaption b { display: block; margin-bottom: 4px; }
+  figcaption span { color: var(--muted); font-size: 15px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 600; color: var(--bg); background: var(--accent); border-radius: 999px; padding: 2px 10px; margin-bottom: 8px; }
+  .plan { background: var(--card); border-radius: 16px; padding: 20px; }
+  .plan h2 { margin: 0 0 12px; font-size: 20px; }
+  .plan ol { margin: 0; padding: 0; list-style: none; }
+  .plan li { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 10px 0; border-top: 1px solid rgba(128,128,128,.22); }
+  .plan li:first-child { border-top: 0; }
+  .plan .t { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .plan li span { color: var(--muted); }
+  .plan li b { color: var(--ink); font-weight: 600; }
+  .note { margin-top: 16px; color: var(--muted); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Ролик про электрика Диму: пример стиля</h1>
+  <p class="lead">Первая сцена, сделанная сегодня под ваш сценарий: мультяшный 3D-стиль, вертикаль 9:16, Дима на улице небольшого города. Ниже — раскадровка всего ролика на 30–40 секунд.</p>
+  <div class="grid">
+    <figure>
+      <video src="dima.mp4" poster="dima.jpg" muted loop playsinline autoplay controls preload="metadata"></video>
+      <figcaption><span class="tag">9:16</span><b>Сцена «А это Дима», 6 секунд</b><span>Персонаж закреплён: в следующих сценах тот же Дима — та же каска, комбинезон и лицо.</span></figcaption>
+    </figure>
+    <section class="plan">
+      <h2>Раскадровка 30–40 секунд</h2>
+      <ol>
+        <li><span class="t">0–4 с</span><span><b>Серпухов</b> — пролёт над городом: «Это Серпухов, город, где работают на совесть».</span></li>
+        <li><span class="t">4–9 с</span><span><b>Дима</b> — знакомство с героем, как в примере слева.</span></li>
+        <li><span class="t">9–14 с</span><span><b>«Работал на дядю»</b> — Дима у щитка, над ним строгий начальник; затем снимает бейдж и уходит.</span></li>
+        <li><span class="t">14–19 с</span><span><b>Заказов нет</b> — молчащий телефон, Дима скучает на кухне.</span></li>
+        <li><span class="t">19–25 с</span><span><b>Ролик залетел</b> — счётчик просмотров растёт, телефон звонит без остановки.</span></li>
+        <li><span class="t">25–32 с</span><span><b>Бригада</b> — Дима с друзьями в одинаковой форме у фургона, у всех денег в 3 раза больше.</span></li>
+        <li><span class="t">32–38 с</span><span><b>Призыв</b> — крупный план: «Хочешь так же? Пиши слово РОЛИК в директ».</span></li>
+      </ol>
+      <p class="note">Голос за кадром, субтитры и музыка добавляются при сборке. Персонажа, город и текст можно поменять до начала работы.</p>
+    </section>
+  </div>
+</main>
+</body>
+</html>
