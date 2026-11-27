@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Голосовой AI-агент первой линии</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0f1216; --card:#161b21; --ink:#e8ecf1; --muted:#8b96a5; --line:#252d37; --voice:#ff9f5a; --llm:#9b8cff; --gw:#3ec7a0; --c1:#59a8ff; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg:#f5f6f8; --card:#ffffff; --ink:#151a21; --muted:#5b6573; --line:#e1e5ea; --voice:#d9661a; --llm:#6a55e8; --gw:#0f9b74; --c1:#1f6fd1; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15.5px/1.55 "IBM Plex Sans", system-ui, sans-serif; }
+  main { max-width:1080px; margin:0 auto; padding:40px 16px 64px; }
+  .tag { color:var(--muted); font:500 12px "IBM Plex Mono", monospace; letter-spacing:.06em; text-transform:uppercase; }
+  h1 { font-size:clamp(26px,4.2vw,40px); line-height:1.12; margin:8px 0 10px; font-weight:600; }
+  .lead { color:var(--muted); max-width:68ch; margin:0 0 26px; }
+  .arch { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin:0 0 34px; }
+  .arch div { background:var(--card); border:1px solid var(--line); border-top:3px solid var(--c); border-radius:12px; padding:12px; font-size:13.5px; }
+  .arch b { display:block; font-size:14px; margin-bottom:4px; }
+  .arch span { color:var(--muted); }
+  .tabs { display:flex; gap:8px; margin:0 0 14px; flex-wrap:wrap; }
+  .tabs button { border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:9px 14px; font:600 14px "IBM Plex Sans"; cursor:pointer; }
+  .tabs button.on { background:var(--ink); color:var(--bg); }
+  .steps { display:flex; flex-direction:column; gap:10px; }
+  .step { display:grid; grid-template-columns:132px minmax(0,1fr); gap:14px; background:var(--card); border:1px solid var(--line); border-left:4px solid var(--c); border-radius:12px; padding:14px 16px; }
+  .who { font:600 12px "IBM Plex Mono", monospace; color:var(--c); text-transform:uppercase; letter-spacing:.04em; }
+  .who span { display:block; color:var(--muted); font-weight:400; text-transform:none; letter-spacing:0; margin-top:2px; }
+  .step h3 { margin:0 0 6px; font-size:15.5px; }
+  .say { font-size:15px; margin:0; }
+  pre { margin:6px 0 0; background:rgba(127,127,127,.08); border-radius:8px; padding:10px 12px; overflow-x:auto; font:13px/1.5 "IBM Plex Mono", monospace; color:var(--ink); white-space:pre; }
+  .step p { margin:6px 0 0; color:var(--muted); font-size:14px; }
+  h2 { font-size:22px; margin:44px 0 12px; font-weight:600; }
+  .rules { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px; }
+  .rules div { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .rules b { display:block; margin-bottom:4px; } .rules span { color:var(--muted); font-size:14px; }
+  .note { margin-top:36px; color:var(--muted); font-size:13.5px; border-top:1px solid var(--line); padding-top:14px; }
+  [hidden] { display:none !important; }
+  @media (max-width:760px) { .arch { grid-template-columns:1fr 1fr; } .step { grid-template-columns:1fr; gap:6px; } }
+</style>
+</head>
+<body>
+<main>
+  <span class="tag">Пример под задачу · данные вымышленные</span>
+  <h1>Голосовой AI-агент первой линии: звонок по шагам</h1>
+  <p class="lead">Как агент принимает входящий звонок и сам подтверждает интернет-заказ. Всё работает на ваших серверах с GPU. Модель не подключена к 1С напрямую: она вызывает только разрешённые операции через изолированный шлюз, а каждый звонок попадает в базу структурированной записью.</p>
+
+  <div class="arch">
+    <div style="--c:var(--c1)"><b>Телефония</b><span>SIP-транк, Asterisk / FreeSWITCH, очередь, перевод на оператора</span></div>
+    <div style="--c:var(--voice)"><b>Речь</b><span>Распознавание (Whisper) и синтез голоса — локально, потоково</span></div>
+    <div style="--c:var(--llm)"><b>LLM</b><span>Локальная модель понимает запрос и выбирает операцию</span></div>
+    <div style="--c:var(--gw)"><b>Шлюз</b><span>Белый список операций, проверка параметров, журнал</span></div>
+    <div style="--c:var(--c1)"><b>1С</b><span>Обмен только через шлюз: заказы, статусы, слоты доставки</span></div>
+  </div>
+
+  <div class="tabs"><button class="on" data-t="in">Входящий: «где мой заказ?»</button><button data-t="out">Исходящий: подтверждение заказа</button></div>
+
+  <div class="steps" id="in">
+    <div class="step" style="--c:var(--voice)"><div class="who">Клиент<span>распознано</span></div><div>
+      <p class="say">«Здравствуйте, я вчера заказывал диван, когда привезут?»</p>
+<pre>asr: 1,1 с · уверенность 0,93 · номер +7 9•• ••• •• 41</pre></div></div>
+    <div class="step" style="--c:var(--llm)"><div class="who">LLM<span>намерение</span></div><div>
+      <h3>Определяет тему и нужную операцию — без ответа «из головы»</h3>
+<pre>{"intent": "статус_доставки", "need": "найти заказ по номеру телефона"}</pre></div></div>
+    <div class="step" style="--c:var(--gw)"><div class="who">Шлюз<span>операция</span></div><div>
+      <h3>Разрешённый запрос к 1С через шлюз</h3>
+<pre>get_orders_by_phone(phone="+79••••••41", days=14)
+→ заказ № 4512 от 26.11, статус «Собран», доставка 29.11, слот 10:00–14:00</pre>
+      <p>Модель видит только ответ шлюза. Прямого доступа к базе 1С у неё нет.</p></div></div>
+    <div class="step" style="--c:var(--voice)"><div class="who">Агент<span>синтез речи</span></div><div>
+      <p class="say">«Ваш заказ 4512 собран, доставка в субботу, 29 ноября, с 10 до 14. Удобно или перенести?»</p></div></div>
+    <div class="step" style="--c:var(--c1)"><div class="who">Итог<span>запись звонка</span></div><div>
+      <h3>Каждый контакт — структурированная запись, ни один лид не теряется</h3>
+<pre>{"тема": "статус доставки", "заказ": 4512, "решено": true,
+ "оператор": false, "длительность": "0:48", "запись": "call_2026-11-28_1032.wav"}</pre>
+      <p>Вопрос вне сценария, жалоба или «позовите человека» — перевод на оператора с краткой выжимкой разговора.</p></div></div>
+  </div>
+
+  <div class="steps" id="out" hidden>
+    <div class="step" style="--c:var(--gw)"><div class="who">Шлюз<span>очередь обзвона</span></div><div>
+      <h3>Новые интернет-заказы забираются из 1С по расписанию</h3>
+<pre>get_unconfirmed_orders() → 23 заказа · звонки 9:00–20:00 · 3 попытки</pre></div></div>
+    <div class="step" style="--c:var(--voice)"><div class="who">Агент<span>синтез речи</span></div><div>
+      <p class="say">«Здравствуйте! Это магазин, звоню подтвердить заказ 4530: шкаф-купе, доставка в понедельник. Подойдёт слот с 14 до 18?»</p></div></div>
+    <div class="step" style="--c:var(--voice)"><div class="who">Клиент<span>распознано</span></div><div>
+      <p class="say">«Лучше утром, после десяти».</p></div></div>
+    <div class="step" style="--c:var(--gw)"><div class="who">Шлюз<span>операция</span></div><div>
+      <h3>Свободные слоты и запись — только через шлюз</h3>
+<pre>get_free_slots(date="2026-12-01", after="10:00") → 10:00–14:00
+set_delivery_slot(order=4530, slot="10:00–14:00", confirmed_by="voice")
+→ ok · статус в 1С «Подтверждён»</pre></div></div>
+    <div class="step" style="--c:var(--c1)"><div class="who">Итог<span>запись звонка</span></div><div>
+<pre>{"заказ": 4530, "подтверждён": true, "слот": "01.12 10:00–14:00", "попытка": 1}</pre>
+      <p>Не дозвонились за 3 попытки — задача менеджеру в 1С, а не тишина.</p></div></div>
+  </div>
+
+  <h2>Принципы</h2>
+  <div class="rules">
+    <div><b>Изолированный контур</b><span>LLM, распознавание и синтез речи — на ваших GPU-серверах; наружу данные не уходят.</span></div>
+    <div><b>Шлюз вместо прямого доступа</b><span>Белый список операций, проверка параметров, журнал каждого вызова; запись в 1С — только разрешёнными операциями.</span></div>
+    <div><b>Задержка ответа</b><span>Потоковое распознавание и синтез, цель — до 1–1,5 с от конца фразы клиента до начала ответа.</span></div>
+    <div><b>Человек рядом</b><span>Перевод на оператора по ключевым словам, по неуверенности модели и по просьбе клиента.</span></div>
+    <div><b>Контрольные звонки</b><span>Набор записанных сценариев прогоняется после каждого изменения до выкладки.</span></div>
+  </div>
+
+  <p class="note">Пример собран под ваш заказ: заказы, номера и слоты вымышленные. Схема — предложение для обсуждения; в аудите сверю её с вашей телефонией, 1С и серверами.</p>
+</main>
+<script>
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+    document.getElementById('in').hidden = b.dataset.t !== 'in';
+    document.getElementById('out').hidden = b.dataset.t !== 'out';
+  });
+</script>
+</body>
+</html>
