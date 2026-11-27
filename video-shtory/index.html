@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Шторы: видео из фото карточки</title>
+<style>
+  :root { --bg:#f3f1ec; --card:#ffffff; --ink:#1b1a17; --muted:#6b6760; --accent:#8a7a5c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:1000px; margin:0 auto; padding:40px 16px 64px; }
+  .tag { display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:10px; }
+  h1 { font-size:clamp(26px,4.4vw,40px); line-height:1.1; margin:0 0 10px; font-weight:600; }
+  .lead { color:var(--muted); max-width:60ch; margin:0 0 30px; }
+  .grid { display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); gap:28px; align-items:start; }
+  video { display:block; width:100%; height:auto; border-radius:14px; background:#ddd; box-shadow:0 16px 40px rgba(0,0,0,.12); }
+  .src { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+  .src img { width:100%; height:auto; border-radius:10px; display:block; }
+  .src span { display:block; font-size:13px; color:var(--muted); margin-top:6px; }
+  h2 { font-size:18px; margin:0 0 10px; }
+  ol { margin:0; padding-left:20px; color:var(--muted); }
+  li { margin-bottom:6px; } li b { color:var(--ink); }
+  @media (max-width:720px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <span class="tag">Тест по вашим фото</span>
+  <h1>Шторка оживает: видео из двух фото карточки</h1>
+  <p class="lead">Взял два ваших кадра и оживил их: ткань колышется, кисти качаются, по полотну идёт пар от утюга, камера едва движется. Это 11 секунд, 3:4 — пример уровня, итоговый ролик 15–30 с соберу по согласованному сценарию.</p>
+  <div class="grid">
+    <video src="shtory.mp4" poster="shtory.jpg" muted loop playsinline autoplay controls preload="metadata"></video>
+    <div>
+      <h2>Исходные фото</h2>
+      <div class="src">
+        <div><img src="foto-1.jpg" alt="Шторка у ванны"><span>Кадр 1 — шторка у ванны</span></div>
+        <div><img src="foto-2.jpg" alt="Отпаривание шторки"><span>Кадр 2 — отпаривание</span></div>
+      </div>
+      <h2>Как сделаю ролик на товар</h2>
+      <ol>
+        <li><b>Сценарий</b> — из 10–15 фото выберу 4–6 кадров, порядок и движение в каждом; согласуем до генерации.</li>
+        <li><b>Оживление</b> — движение ткани, камеры, воды, рук; фактура и узор как на фото.</li>
+        <li><b>Монтаж</b> — сдержанный цвет, мягкие переходы, без лишних эффектов; 15–30 с.</li>
+        <li><b>Форматы</b> — 3:4 для карточки, 9:16 по запросу.</li>
+      </ol>
+    </div>
+  </div>
+</main>
+</body>
+</html>
